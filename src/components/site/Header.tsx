@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import logo from "@/assets/uuea-logo.png";
-import { useI18n, type dict as Dict } from "@/lib/i18n";
-type Key = keyof typeof Dict;
+import { useI18n, dict } from "@/lib/i18n";
 import { Phone, Menu, X } from "lucide-react";
+
+type Key = keyof typeof dict;
 
 export function Header() {
   const { t, lang, setLang } = useI18n();
@@ -16,7 +17,7 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const links: Array<[string, keyof typeof navMap]> = [
+  const links: Array<[string, Key]> = [
     ["#about", "nav.about"],
     ["#services", "nav.services"],
     ["#portfolio", "nav.portfolio"],
@@ -109,5 +110,3 @@ export function Header() {
     </header>
   );
 }
-
-const navMap = {} as Record<`nav.${string}`, true>;
