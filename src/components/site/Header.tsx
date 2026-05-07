@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import logo from "@/assets/uuea-logo.png";
-import { useI18n } from "@/lib/i18n";
+import { useI18n, type dict as Dict } from "@/lib/i18n";
+type Key = keyof typeof Dict;
 import { Phone, Menu, X } from "lucide-react";
 
 export function Header() {
