@@ -22,7 +22,7 @@ export const dict = {
     en: "An association uniting 140+ companies. A premium platform for export-import, investment and international cooperation.",
   },
   "hero.cta1": { uz: "A'zo bo'lish", en: "Become a member" },
-  "hero.cta2": { uz: "Bepul konsultatsiya", en: "Free consultation" },
+  "hero.cta2": { uz: "Platformaga tashrif buyirish", en: "Visit our platform" },
 
   "stats.members": { uz: "Faol a'zolar", en: "Active members" },
   "stats.invest": { uz: "Investitsiya hajmi", en: "Investment volume" },
