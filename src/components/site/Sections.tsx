@@ -69,7 +69,7 @@ export function Stats() {
   const { t } = useI18n();
   const items = [
     { v: "140+", k: "stats.members" as const },
-    { v: "$85M+", k: "stats.invest" as const },
+    { v: "$400M+", k: "stats.invest" as const },
     { v: "1,000+", k: "stats.deals" as const },
     { v: "10+", k: "stats.years" as const },
   ];
@@ -239,7 +239,7 @@ export function Results() {
   const { t, lang } = useI18n();
   const items = [
     { v: "150+", l: lang === "uz" ? "Faol a'zolar" : "Active members" },
-    { v: "$85M+", l: lang === "uz" ? "Investitsiya hajmi" : "Investment volume" },
+    { v: "$400M+", l: lang === "uz" ? "Investitsiya hajmi" : "Investment volume" },
     { v: "270+", l: lang === "uz" ? "2026 prognoz" : "2026 forecast" },
     { v: "87%", l: lang === "uz" ? "Mamnunlik" : "Satisfaction" },
     { v: "12+", l: lang === "uz" ? "Yillik forumlar" : "Yearly forums" },
