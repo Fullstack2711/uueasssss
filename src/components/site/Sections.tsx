@@ -2,6 +2,7 @@ import { useI18n } from "@/lib/i18n";
 import heroImg from "@/assets/hero-bridge.jpg";
 import aboutImg from "@/assets/about-handshake.jpg";
 import sectionBg from "@/assets/section-bg.jpg";
+import logo from "@/assets/uuea-logo.png";
 import {
   ArrowRight, Briefcase, Globe2, Scale, TrendingUp, Sparkles, ShieldCheck, Lightbulb,
   Handshake, MapPin, Mail, Phone, Send, Check, Star, ChevronDown,
@@ -492,7 +493,7 @@ export function Footer() {
     <footer className="border-t border-border py-12">
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
         <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-gradient-moon" />
+          <img src={logo} alt="UUEA" className="h-8 w-auto object-contain" />
           <span className="font-display font-semibold text-foreground">UUEA</span>
           <span>· USA × Uzbekistan Entrepreneurs Association</span>
         </div>
