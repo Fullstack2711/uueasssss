@@ -34,11 +34,9 @@ export function Header() {
     >
       <div className="container mx-auto px-6 flex items-center justify-between gap-6">
         <a href="#top" className="flex items-center gap-3 group">
-          <div className="relative h-10 w-10 flex items-center justify-center rounded-xl bg-gradient-moon shadow-glow">
-            <img src={logo} alt="UUEA" className="h-7 w-7 invert brightness-0" />
-          </div>
-          <div className="leading-tight">
-            <div className="font-display font-bold text-base tracking-tight">UUEA</div>
+          <img src={logo} alt="UUEA" className="h-11 w-auto object-contain transition-transform group-hover:scale-105" />
+          <div className="leading-tight hidden sm:block">
+            <div className="font-display font-bold text-base tracking-tight text-foreground">UUEA</div>
             <div className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">USA × Uzbekistan</div>
           </div>
         </a>

@@ -20,8 +20,8 @@ export function Hero() {
         width={1920}
         height={1080}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
-      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/20 blur-[120px] animate-glow" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/60 to-background" />
+      <div className="absolute -top-40 right-0 w-[500px] h-[500px] rounded-full bg-primary/15 blur-[120px] animate-glow" />
 
       <div className="container relative mx-auto px-6 max-w-6xl">
         <div className="animate-fade-up">
