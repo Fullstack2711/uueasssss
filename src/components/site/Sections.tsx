@@ -48,10 +48,13 @@ export function Hero() {
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
             <a
-              href="#services"
-              className="inline-flex items-center gap-2 px-7 py-4 rounded-full glass text-foreground hover:bg-card/80 transition-all premium-border"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 px-7 py-4 rounded-full glass text-foreground hover:bg-card/80 transition-all premium-border hover:-translate-y-1"
             >
               {t("hero.cta2")}
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
           </div>
         </div>
