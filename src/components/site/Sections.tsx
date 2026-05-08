@@ -31,13 +31,13 @@ export function Hero() {
             <Sparkles className="h-3.5 w-3.5" /> {t("hero.eyebrow")}
           </div>
 
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold leading-[1.05] tracking-tighter">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-[1.1] tracking-tight">
             <span className="text-foreground">{t("hero.title1")}</span>
             <br />
             <span className="text-gradient-moon">{t("hero.title2")}</span>
           </h1>
 
-          <p className="mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
+          <p className="mt-6 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
             {t("hero.sub")}
           </p>
 
