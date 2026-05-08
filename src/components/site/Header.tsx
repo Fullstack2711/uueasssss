@@ -34,7 +34,7 @@ export function Header() {
     >
       <div className="container mx-auto px-6 flex items-center justify-between gap-6">
         <a href="#top" className="flex items-center gap-3 group">
-          <img src={logo} alt="UUEA" className="h-11 w-auto object-contain transition-transform group-hover:scale-105" />
+          <img src={logo} alt="UUEA" className="h-16 md:h-20 w-auto object-contain transition-transform group-hover:scale-105 drop-shadow-[0_4px_20px_rgba(180,140,60,0.35)]" />
           <div className="leading-tight hidden sm:block">
             <div className="font-display font-bold text-base tracking-tight text-foreground">UUEA</div>
             <div className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">USA × Uzbekistan</div>
