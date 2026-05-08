@@ -17,12 +17,13 @@ export function Hero() {
       <img
         src={heroImg}
         alt=""
-        className="absolute inset-0 w-full h-full object-cover opacity-60"
+        className="absolute inset-0 w-full h-full object-cover opacity-95"
         width={1920}
         height={1080}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/60 to-background" />
-      <div className="absolute -top-40 right-0 w-[500px] h-[500px] rounded-full bg-primary/15 blur-[120px] animate-glow" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-background/20" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background" />
+      <div className="absolute -top-40 right-0 w-[500px] h-[500px] rounded-full bg-primary/20 blur-[120px] animate-glow" />
 
       <div className="container relative mx-auto px-6 max-w-6xl">
         <div className="animate-fade-up">
