@@ -8,6 +8,7 @@ import {
   Handshake, MapPin, Mail, Phone, Send, Check, Star, ChevronDown,
 } from "lucide-react";
 import { useState } from "react";
+import { Reveal } from "./Reveal";
 
 /* ---------- HERO ---------- */
 export function Hero() {
@@ -34,7 +35,7 @@ export function Hero() {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-[1.1] tracking-tight">
             <span className="text-foreground">{t("hero.title1")}</span>
             <br />
-            <span className="text-gradient-moon">{t("hero.title2")}</span>
+            <span className="text-gradient-anim">{t("hero.title2")}</span>
           </h1>
 
           <p className="mt-6 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
@@ -44,7 +45,7 @@ export function Hero() {
           <div className="mt-10 flex flex-wrap gap-4">
             <a
               href="#contact"
-              className="group inline-flex items-center gap-2 px-7 py-4 rounded-full bg-gradient-moon text-primary-foreground font-medium shadow-moon hover:shadow-glow transition-all hover:-translate-y-1"
+              className="btn-shimmer group inline-flex items-center gap-2 px-7 py-4 rounded-full bg-gradient-moon text-primary-foreground font-medium shadow-moon hover:shadow-glow transition-all hover:-translate-y-1"
             >
               {t("hero.cta1")}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -53,7 +54,7 @@ export function Hero() {
               href="#"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 px-7 py-4 rounded-full glass text-foreground hover:bg-card/80 transition-all premium-border hover:-translate-y-1"
+              className="btn-shimmer group inline-flex items-center gap-2 px-7 py-4 rounded-full glass text-foreground hover:bg-card/80 transition-all premium-border hover:-translate-y-1"
             >
               {t("hero.cta2")}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -81,11 +82,11 @@ export function Stats() {
   return (
     <section className="relative py-20 border-y border-border">
       <div className="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
-        {items.map((it) => (
-          <div key={it.k} className="text-center group">
-            <div className="text-4xl md:text-5xl font-display font-bold text-gradient-moon">{it.v}</div>
+        {items.map((it, i) => (
+          <Reveal key={it.k} delay={i * 100} className="text-center group">
+            <div className="text-4xl md:text-5xl font-display font-bold text-gradient-anim stat-glow transition-transform duration-500 group-hover:scale-110">{it.v}</div>
             <div className="mt-2 text-xs tracking-[0.2em] uppercase text-muted-foreground">{t(it.k)}</div>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>
@@ -122,12 +123,12 @@ export function About() {
           <p className="mt-6 text-lg text-muted-foreground leading-relaxed">{t("about.body")}</p>
 
           <div className="mt-10 grid sm:grid-cols-3 gap-4">
-            {cards.map(({ Icon, title, body }) => (
-              <div key={title} className="p-5 rounded-2xl glass premium-border">
-                <Icon className="h-6 w-6 text-primary" />
+            {cards.map(({ Icon, title, body }, i) => (
+              <Reveal key={title} delay={i * 120} className="p-5 rounded-2xl glass premium-border glow-border spotlight hover:-translate-y-1 transition-transform duration-500">
+                <Icon className="h-6 w-6 text-primary icon-pop" />
                 <div className="mt-3 font-display font-semibold">{title}</div>
                 <div className="mt-1 text-sm text-muted-foreground">{body}</div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -153,14 +154,15 @@ export function Services() {
         <SectionHeader eyebrow={t("services.eyebrow")} title={t("services.title")} />
         <div className="mt-16 grid md:grid-cols-2 gap-6">
           {items.map(({ Icon, t: title, b }, i) => (
-            <div
+            <Reveal
               key={title}
-              className="group relative p-8 rounded-3xl glass premium-border overflow-hidden hover:-translate-y-1 transition-all duration-500"
+              delay={i * 120}
+              className="group relative p-8 rounded-3xl glass premium-border glow-border spotlight overflow-hidden hover:-translate-y-1 transition-all duration-500"
             >
               <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-primary/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative flex items-start gap-5">
-                <div className="h-14 w-14 flex items-center justify-center rounded-2xl bg-gradient-moon shadow-glow shrink-0">
-                  <Icon className="h-7 w-7 text-primary-foreground" />
+                <div className="h-14 w-14 flex items-center justify-center rounded-2xl bg-gradient-moon shadow-glow shrink-0 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+                  <Icon className="h-7 w-7 text-primary-foreground icon-pop" />
                 </div>
                 <div>
                   <div className="text-xs tracking-widest text-primary mb-2">0{i + 1}</div>
@@ -168,7 +170,7 @@ export function Services() {
                   <p className="mt-2 text-muted-foreground leading-relaxed">{b}</p>
                 </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -219,19 +221,19 @@ export function Portfolio() {
         <SectionHeader eyebrow={t("portfolio.eyebrow")} title={t("portfolio.title")} />
         <div className="mt-16 grid md:grid-cols-2 gap-6">
           {projects.map((p, i) => (
-            <article key={i} className="group relative p-8 rounded-3xl glass premium-border hover:shadow-moon transition-all duration-500">
+            <Reveal key={i} delay={i * 100} as="article" className="group relative p-8 rounded-3xl glass premium-border glow-border spotlight hover:shadow-moon hover:-translate-y-1 transition-all duration-500">
               <div className="flex items-center justify-between mb-6">
                 <span className="text-xs tracking-widest uppercase px-3 py-1 rounded-full border border-primary/30 text-primary">{p.tag}</span>
-                <span className="text-2xl font-display font-bold text-gradient-moon">{p.stat}</span>
+                <span className="text-2xl font-display font-bold text-gradient-anim stat-glow">{p.stat}</span>
               </div>
               <h3 className="text-2xl font-display font-semibold leading-tight">
                 {lang === "uz" ? p.titleUz : p.titleEn}
               </h3>
               <p className="mt-3 text-muted-foreground">{lang === "uz" ? p.bodyUz : p.bodyEn}</p>
-              <div className="mt-6 flex items-center gap-2 text-sm text-primary opacity-0 group-hover:opacity-100 transition">
+              <div className="mt-6 flex items-center gap-2 text-sm text-primary opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-500">
                 {lang === "uz" ? "Batafsil" : "Read more"} <ArrowRight className="h-4 w-4" />
               </div>
-            </article>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -256,11 +258,11 @@ export function Results() {
       <div className="container relative mx-auto px-6">
         <SectionHeader eyebrow={t("results.eyebrow")} title={t("results.title")} />
         <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-px bg-border rounded-3xl overflow-hidden premium-border">
-          {items.map((it) => (
-            <div key={it.l} className="bg-card p-10 text-center group hover:bg-secondary transition-colors">
-              <div className="text-5xl md:text-6xl font-display font-bold text-gradient-moon">{it.v}</div>
+          {items.map((it, i) => (
+            <Reveal key={it.l} delay={i * 80} className="bg-card p-10 text-center group hover:bg-secondary transition-colors spotlight">
+              <div className="text-5xl md:text-6xl font-display font-bold text-gradient-anim stat-glow transition-transform duration-500 group-hover:scale-110">{it.v}</div>
               <div className="mt-3 text-sm text-muted-foreground tracking-wider uppercase">{it.l}</div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -287,17 +289,17 @@ export function Testimonials() {
       <div className="container mx-auto px-6">
         <SectionHeader eyebrow={t("testi.eyebrow")} title={t("testi.title")} />
         <div className="mt-16 grid md:grid-cols-3 gap-6">
-          {reviews.map((r) => (
-            <div key={r.name} className="p-8 rounded-3xl glass premium-border flex flex-col">
+          {reviews.map((r, i) => (
+            <Reveal key={r.name} delay={i * 120} className="p-8 rounded-3xl glass premium-border glow-border spotlight flex flex-col hover:-translate-y-1 transition-transform duration-500">
               <div className="flex gap-1 text-primary mb-4">
-                {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
+                {Array.from({ length: 5 }).map((_, idx) => <Star key={idx} className="h-4 w-4 fill-current" />)}
               </div>
               <p className="text-foreground/90 leading-relaxed flex-1">"{lang === "uz" ? r.uz : r.en}"</p>
               <div className="mt-6 pt-6 border-t border-border">
                 <div className="font-display font-semibold">{r.name}</div>
                 <div className="text-sm text-muted-foreground">{r.role}</div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -372,14 +374,14 @@ export function Process() {
         <div className="mt-16 grid md:grid-cols-4 gap-6 relative">
           <div className="hidden md:block absolute top-7 left-[12%] right-[12%] h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
           {steps.map((s, i) => (
-            <div key={s.t} className="relative text-center">
-              <div className="mx-auto h-14 w-14 rounded-2xl bg-gradient-moon shadow-glow flex items-center justify-center moon-ring">
-                <s.Icon className="h-6 w-6 text-primary-foreground" />
+            <Reveal key={s.t} delay={i * 150} className="relative text-center group">
+              <div className="mx-auto h-14 w-14 rounded-2xl bg-gradient-moon shadow-glow flex items-center justify-center moon-ring transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3">
+                <s.Icon className="h-6 w-6 text-primary-foreground icon-pop" />
               </div>
               <div className="mt-2 text-xs tracking-widest text-primary">STEP 0{i + 1}</div>
               <div className="mt-2 font-display font-semibold text-lg">{s.t}</div>
               <div className="mt-1 text-sm text-muted-foreground">{s.b}</div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -401,20 +403,20 @@ export function Regions() {
           {[
             { title: t("regions.us"), cities: us, flag: "🇺🇸" },
             { title: t("regions.uz"), cities: lang === "uz" ? uz : ["Tashkent", "Samarkand", "Bukhara", "Andijan"], flag: "🇺🇿" },
-          ].map((b) => (
-            <div key={b.title} className="p-10 rounded-3xl glass premium-border">
+          ].map((b, i) => (
+            <Reveal key={b.title} delay={i * 150} className="p-10 rounded-3xl glass premium-border glow-border spotlight hover:-translate-y-1 transition-transform duration-500">
               <div className="flex items-center gap-4">
                 <div className="text-4xl">{b.flag}</div>
                 <h3 className="text-2xl font-display font-semibold">{b.title}</h3>
               </div>
               <ul className="mt-8 grid grid-cols-2 gap-3">
                 {b.cities.map((c) => (
-                  <li key={c} className="flex items-center gap-3 text-foreground/90">
+                  <li key={c} className="flex items-center gap-3 text-foreground/90 hover:text-primary transition-colors">
                     <MapPin className="h-4 w-4 text-primary" /> {c}
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -467,7 +469,7 @@ export function Contact() {
             </div>
             <button
               type="submit"
-              className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-gradient-moon text-primary-foreground font-medium shadow-moon hover:shadow-glow transition-all hover:-translate-y-0.5"
+              className="btn-shimmer w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-gradient-moon text-primary-foreground font-medium shadow-moon hover:shadow-glow transition-all hover:-translate-y-0.5"
             >
               {sent ? <><Check className="h-4 w-4"/> Sent</> : <>{t("contact.send")} <Send className="h-4 w-4" /></>}
             </button>
@@ -512,11 +514,11 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 }
 function SectionHeader({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
-    <div className="text-center max-w-3xl mx-auto">
+    <Reveal className="text-center max-w-3xl mx-auto">
       <div className="inline-flex items-center gap-2 text-xs tracking-[0.3em] uppercase text-primary">
         <span className="h-px w-8 bg-primary" />{eyebrow}<span className="h-px w-8 bg-primary" />
       </div>
-      <h2 className="mt-5 text-4xl md:text-5xl font-display font-bold tracking-tight text-gradient">{title}</h2>
-    </div>
+      <h2 className="mt-5 text-4xl md:text-5xl font-display font-bold tracking-tight text-gradient-anim">{title}</h2>
+    </Reveal>
   );
 }
