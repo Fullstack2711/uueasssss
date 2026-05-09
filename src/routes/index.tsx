@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { I18nProvider } from "@/lib/i18n";
 import { Header } from "@/components/site/Header";
 import {
@@ -24,6 +25,20 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const el = target.closest<HTMLElement>(".spotlight");
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+      el.style.setProperty("--my", `${e.clientY - rect.top}px`);
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+
   return (
     <I18nProvider>
       <div className="bg-background text-foreground min-h-screen">
