@@ -34,10 +34,10 @@ export function Reveal({ children, className = "", delay = 0, as = "div", y = 24
     return () => io.disconnect();
   }, []);
 
-  const Tag = as as keyof JSX.IntrinsicElements;
+  const Tag = as as React.ElementType;
   return (
-    // @ts-expect-error dynamic ref tag
     <Tag
+      ref={ref as React.Ref<HTMLElement>}
       ref={ref}
       style={{
         transitionDelay: `${delay}ms`,
