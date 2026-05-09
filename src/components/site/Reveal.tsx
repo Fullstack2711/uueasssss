@@ -38,7 +38,6 @@ export function Reveal({ children, className = "", delay = 0, as = "div", y = 24
   return (
     <Tag
       ref={ref as React.Ref<HTMLElement>}
-      ref={ref}
       style={{
         transitionDelay: `${delay}ms`,
         transform: shown ? "translateY(0)" : `translateY(${y}px)`,
