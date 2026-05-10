@@ -5,7 +5,7 @@ import sectionBg from "@/assets/section-bg.jpg";
 import logo from "@/assets/uuea-logo.png";
 import {
   ArrowRight, Briefcase, Globe2, Scale, TrendingUp, Sparkles, ShieldCheck, Lightbulb,
-  Handshake, MapPin, Mail, Phone, Send, Check, Star, ChevronDown,
+  Handshake, MapPin, Mail, Phone, Send, Check, Star, ChevronDown, Calendar, Newspaper,
 } from "lucide-react";
 import { useState } from "react";
 import { Reveal } from "./Reveal";
