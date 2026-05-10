@@ -53,6 +53,7 @@ function Index() {
           <Testimonials />
           <Process />
           <Regions />
+          <News />
           <FAQ />
           <Contact />
         </main>
