@@ -10,8 +10,13 @@ export const dict = {
   "nav.portfolio": { uz: "Portfolio", en: "Portfolio" },
   "nav.results": { uz: "Natijalar", en: "Results" },
   "nav.testimonials": { uz: "Sharhlar", en: "Testimonials" },
+  "nav.news": { uz: "Yangiliklar", en: "News" },
   "nav.faq": { uz: "Savollar", en: "FAQ" },
   "nav.contact": { uz: "Aloqa", en: "Contact" },
+
+  "news.eyebrow": { uz: "YANGILIKLAR", en: "NEWS" },
+  "news.title": { uz: "So'nggi yangiliklar va e'lonlar", en: "Latest news & announcements" },
+  "news.read": { uz: "Batafsil o'qish", en: "Read more" },
   "nav.join": { uz: "A'zo bo'lish", en: "Join us" },
 
   "hero.eyebrow": { uz: "USA × O'ZBEKISTON BIZNES KO'PRIGI", en: "USA × UZBEKISTAN BUSINESS BRIDGE" },

@@ -22,6 +22,7 @@ export function Header() {
     ["#services", "nav.services"],
     ["#portfolio", "nav.portfolio"],
     ["#results", "nav.results"],
+    ["#news", "nav.news"],
     ["#faq", "nav.faq"],
     ["#contact", "nav.contact"],
   ];

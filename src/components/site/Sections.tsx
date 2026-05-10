@@ -5,7 +5,7 @@ import sectionBg from "@/assets/section-bg.jpg";
 import logo from "@/assets/uuea-logo.png";
 import {
   ArrowRight, Briefcase, Globe2, Scale, TrendingUp, Sparkles, ShieldCheck, Lightbulb,
-  Handshake, MapPin, Mail, Phone, Send, Check, Star, ChevronDown,
+  Handshake, MapPin, Mail, Phone, Send, Check, Star, ChevronDown, Calendar, Newspaper,
 } from "lucide-react";
 import { useState } from "react";
 import { Reveal } from "./Reveal";
@@ -486,6 +486,84 @@ function Field({ label, type = "text" }: { label: string; type?: string }) {
       <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">{label}</label>
       <input type={type} className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 focus:outline-none focus:border-primary transition" />
     </div>
+  );
+}
+
+/* ---------- NEWS ---------- */
+export function News() {
+  const { t, lang } = useI18n();
+  const items = [
+    {
+      tag: lang === "uz" ? "Forum" : "Forum",
+      date: "2026-04-18",
+      titleUz: "UUEA Annual Forum 2026 — Chicago",
+      titleEn: "UUEA Annual Forum 2026 — Chicago",
+      bodyUz: "Yillik forum 500+ tadbirkorni birlashtiradi. Investitsiya sessiyalari va B2B uchrashuvlar.",
+      bodyEn: "The annual forum brings together 500+ entrepreneurs. Investment sessions and B2B meetings.",
+    },
+    {
+      tag: lang === "uz" ? "Bitim" : "Deal",
+      date: "2026-03-02",
+      titleUz: "Tashkent Textile AQSHga $3.2M eksport shartnomasi imzoladi",
+      titleEn: "Tashkent Textile signs $3.2M export deal with US retailer",
+      bodyUz: "UUEA vositachiligida yangi yirik shartnoma — yiliga 1.2M mahsulot.",
+      bodyEn: "Brokered by UUEA — 1.2M units per year under the new agreement.",
+    },
+    {
+      tag: lang === "uz" ? "Investitsiya" : "Investment",
+      date: "2026-01-25",
+      titleUz: "UzTech startapi Silicon Valley fondidan $1.5M jalb qildi",
+      titleEn: "UzTech startup raises $1.5M from a Silicon Valley fund",
+      bodyUz: "AI yo'nalishidagi mahalliy startap birinchi xalqaro raundni yopdi.",
+      bodyEn: "A local AI startup closed its first international funding round.",
+    },
+  ];
+  const fmt = (d: string) =>
+    new Date(d).toLocaleDateString(lang === "uz" ? "uz-UZ" : "en-US", {
+      year: "numeric", month: "short", day: "numeric",
+    });
+  return (
+    <section id="news" className="relative py-32 overflow-hidden">
+      <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-primary/10 blur-[140px]" />
+      <div className="container relative mx-auto px-6">
+        <SectionHeader eyebrow={t("news.eyebrow")} title={t("news.title")} />
+        <div className="mt-16 grid md:grid-cols-3 gap-6">
+          {items.map((n, i) => (
+            <Reveal
+              key={i}
+              delay={i * 120}
+              as="article"
+              className="group relative p-7 rounded-3xl glass premium-border glow-border spotlight overflow-hidden hover:-translate-y-1 transition-all duration-500 flex flex-col"
+            >
+              <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-primary/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative flex items-center justify-between mb-5">
+                <span className="text-[10px] tracking-widest uppercase px-3 py-1 rounded-full border border-primary/30 text-primary">
+                  {n.tag}
+                </span>
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Calendar className="h-3.5 w-3.5" /> {fmt(n.date)}
+                </div>
+              </div>
+              <div className="relative h-12 w-12 mb-4 rounded-2xl bg-gradient-moon shadow-glow flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3">
+                <Newspaper className="h-5 w-5 text-primary-foreground icon-pop" />
+              </div>
+              <h3 className="relative text-lg font-display font-semibold leading-snug">
+                {lang === "uz" ? n.titleUz : n.titleEn}
+              </h3>
+              <p className="relative mt-2 text-sm text-muted-foreground flex-1">
+                {lang === "uz" ? n.bodyUz : n.bodyEn}
+              </p>
+              <a
+                href="#"
+                className="relative mt-5 inline-flex items-center gap-2 text-sm text-primary group-hover:translate-x-1 transition-transform"
+              >
+                {t("news.read")} <ArrowRight className="h-4 w-4" />
+              </a>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
