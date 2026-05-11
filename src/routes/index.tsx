@@ -54,6 +54,7 @@ function Index() {
           <Process />
           <Regions />
           <News />
+          <Pricing />
           <FAQ />
           <Contact />
         </main>
