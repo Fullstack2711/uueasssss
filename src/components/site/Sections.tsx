@@ -518,10 +518,13 @@ export function News() {
       bodyEn: "A local AI startup closed its first international funding round.",
     },
   ];
-  const fmt = (d: string) =>
-    new Date(d).toLocaleDateString(lang === "uz" ? "uz-UZ" : "en-US", {
-      year: "numeric", month: "short", day: "numeric",
-    });
+  const monthsUz = ["Yan", "Fev", "Mar", "Apr", "May", "Iyun", "Iyul", "Avg", "Sen", "Okt", "Noy", "Dek"];
+  const monthsEn = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const fmt = (d: string) => {
+    const [y, m, day] = d.split("-").map(Number);
+    const mo = (lang === "uz" ? monthsUz : monthsEn)[m - 1];
+    return `${day} ${mo} ${y}`;
+  };
   return (
     <section id="news" className="relative py-32 overflow-hidden">
       <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-primary/10 blur-[140px]" />
