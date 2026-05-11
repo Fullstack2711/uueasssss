@@ -6,6 +6,7 @@ import logo from "@/assets/uuea-logo.png";
 import {
   ArrowRight, Briefcase, Globe2, Scale, TrendingUp, Sparkles, ShieldCheck, Lightbulb,
   Handshake, MapPin, Mail, Phone, Send, Check, Star, ChevronDown, Calendar, Newspaper,
+  Crown, Building2, Gem, Award, Trophy,
 } from "lucide-react";
 import { useState } from "react";
 import { Reveal } from "./Reveal";
@@ -518,10 +519,13 @@ export function News() {
       bodyEn: "A local AI startup closed its first international funding round.",
     },
   ];
-  const fmt = (d: string) =>
-    new Date(d).toLocaleDateString(lang === "uz" ? "uz-UZ" : "en-US", {
-      year: "numeric", month: "short", day: "numeric",
-    });
+  const monthsUz = ["Yan", "Fev", "Mar", "Apr", "May", "Iyun", "Iyul", "Avg", "Sen", "Okt", "Noy", "Dek"];
+  const monthsEn = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const fmt = (d: string) => {
+    const [y, m, day] = d.split("-").map(Number);
+    const mo = (lang === "uz" ? monthsUz : monthsEn)[m - 1];
+    return `${day} ${mo} ${y}`;
+  };
   return (
     <section id="news" className="relative py-32 overflow-hidden">
       <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-primary/10 blur-[140px]" />
@@ -567,7 +571,155 @@ export function News() {
   );
 }
 
-/* ---------- FOOTER ---------- */
+/* ---------- PRICING ---------- */
+type Plan = {
+  name: string;
+  price: string;
+  period: string;
+  desc: string;
+  Icon: typeof Crown;
+  featured?: boolean;
+};
+
+export function Pricing() {
+  const { t, lang } = useI18n();
+  const [tab, setTab] = useState<"individual" | "corporate">("individual");
+
+  const individual: Plan[] = [
+    {
+      name: "Silver",
+      price: "$99",
+      period: lang === "uz" ? "/yil" : "/year",
+      desc: lang === "uz"
+        ? "Tarmoq yaratayotgan tadbirkorlar uchun"
+        : "For entrepreneurs building their network",
+      Icon: Award,
+    },
+    {
+      name: "Gold",
+      price: "$249",
+      period: lang === "uz" ? "/yil" : "/year",
+      desc: lang === "uz"
+        ? "Jiddiy biznes egalari uchun premium kirish"
+        : "Premium access for serious business owners",
+      Icon: Crown,
+      featured: true,
+    },
+    {
+      name: "Founding",
+      price: "$499",
+      period: lang === "uz" ? "/yil" : "/year",
+      desc: lang === "uz"
+        ? "Assotsiatsiya kelajagini shakllantiruvchi liderlar uchun"
+        : "For leaders shaping the association's future",
+      Icon: Gem,
+    },
+  ];
+
+  const corporate: Plan[] = [
+    {
+      name: "Bronze Sponsor",
+      price: "$1,500",
+      period: lang === "uz" ? "/yil" : "/year",
+      desc: lang === "uz" ? "Korporativ a'zolikning boshlang'ich darajasi" : "Entry-level corporate membership",
+      Icon: Building2,
+    },
+    {
+      name: "Silver Sponsor",
+      price: "$3,500",
+      period: lang === "uz" ? "/yil" : "/year",
+      desc: lang === "uz" ? "Kengaytirilgan ko'rinish va imkoniyatlar" : "Expanded visibility and benefits",
+      Icon: Award,
+    },
+    {
+      name: "Gold Sponsor",
+      price: "$7,500",
+      period: lang === "uz" ? "/yil" : "/year",
+      desc: lang === "uz" ? "Yetakchi homiylik va premium imtiyozlar" : "Leading sponsorship and premium perks",
+      Icon: Trophy,
+      featured: true,
+    },
+    {
+      name: "Platinum Partner",
+      price: "$15,000",
+      period: lang === "uz" ? "/yil" : "/year",
+      desc: lang === "uz" ? "Strategik hamkorlik va eksklyuziv kirish" : "Strategic partnership and exclusive access",
+      Icon: Gem,
+    },
+  ];
+
+  const plans = tab === "individual" ? individual : corporate;
+  const cols = tab === "individual" ? "md:grid-cols-3" : "md:grid-cols-2 xl:grid-cols-4";
+
+  return (
+    <section id="pricing" className="relative py-32 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-premium opacity-60" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-primary/15 blur-[140px]" />
+      <div className="container relative mx-auto px-6">
+        <SectionHeader eyebrow={t("pricing.eyebrow")} title={t("pricing.title")} />
+
+        <div className="mt-10 flex justify-center">
+          <div className="inline-flex items-center gap-1 p-1.5 rounded-full glass premium-border">
+            {(["individual", "corporate"] as const).map((k) => {
+              const active = tab === k;
+              return (
+                <button
+                  key={k}
+                  onClick={() => setTab(k)}
+                  className={`px-6 py-2.5 text-sm font-medium rounded-full transition-all ${
+                    active
+                      ? "bg-gradient-moon text-primary-foreground shadow-moon"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {t(k === "individual" ? "pricing.individual" : "pricing.corporate")}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div key={tab} className={`mt-14 grid gap-6 ${cols}`}>
+          {plans.map((p, i) => (
+            <Reveal
+              key={`${tab}-${p.name}`}
+              delay={i * 100}
+              className={`relative p-8 rounded-3xl glass premium-border glow-border spotlight overflow-hidden hover:-translate-y-1 transition-all duration-500 flex flex-col ${
+                p.featured ? "ring-1 ring-primary/40 shadow-glow" : ""
+              }`}
+            >
+              {p.featured && (
+                <span className="absolute top-5 right-5 text-[10px] tracking-widest uppercase px-2.5 py-1 rounded-full bg-gradient-moon text-primary-foreground shadow-moon">
+                  {lang === "uz" ? "Tavsiya" : "Popular"}
+                </span>
+              )}
+              <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-primary/10 blur-3xl opacity-0 hover:opacity-100 transition-opacity" />
+              <div className="relative h-12 w-12 rounded-2xl bg-gradient-moon shadow-glow flex items-center justify-center transition-transform duration-500 hover:scale-110">
+                <p.Icon className="h-5 w-5 text-primary-foreground icon-pop" />
+              </div>
+              <h3 className="relative mt-5 text-xl font-display font-semibold">{p.name}</h3>
+              <div className="relative mt-3 flex items-baseline gap-1">
+                <span className="text-4xl font-display font-bold text-gradient-anim stat-glow">{p.price}</span>
+                <span className="text-sm text-muted-foreground">{p.period}</span>
+              </div>
+              <p className="relative mt-3 text-sm text-muted-foreground flex-1">{p.desc}</p>
+              <a
+                href="#contact"
+                className={`relative mt-6 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-medium transition-all hover:-translate-y-0.5 ${
+                  p.featured
+                    ? "bg-gradient-moon text-primary-foreground shadow-moon hover:shadow-glow"
+                    : "glass premium-border text-foreground hover:bg-card/80"
+                }`}
+              >
+                {t("pricing.cta")} <ArrowRight className="h-4 w-4" />
+              </a>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 export function Footer() {
   const { t } = useI18n();
   return (

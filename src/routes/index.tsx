@@ -4,7 +4,7 @@ import { I18nProvider } from "@/lib/i18n";
 import { Header } from "@/components/site/Header";
 import {
   Hero, Stats, About, Services, Portfolio, Results,
-  Testimonials, FAQ, Process, Regions, News, Contact, Footer,
+  Testimonials, FAQ, Process, Regions, News, Pricing, Contact, Footer,
 } from "@/components/site/Sections";
 
 export const Route = createFileRoute("/")({
@@ -54,6 +54,7 @@ function Index() {
           <Process />
           <Regions />
           <News />
+          <Pricing />
           <FAQ />
           <Contact />
         </main>

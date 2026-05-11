@@ -18,6 +18,13 @@ export const dict = {
   "news.title": { uz: "So'nggi yangiliklar va e'lonlar", en: "Latest news & announcements" },
   "news.read": { uz: "Batafsil o'qish", en: "Read more" },
   "nav.join": { uz: "A'zo bo'lish", en: "Join us" },
+  "nav.pricing": { uz: "Narxlar", en: "Pricing" },
+
+  "pricing.eyebrow": { uz: "NARXLAR", en: "PRICING" },
+  "pricing.title": { uz: "A'zolik rejalari", en: "Membership plans" },
+  "pricing.individual": { uz: "Shaxsiy", en: "Individual" },
+  "pricing.corporate": { uz: "Korporativ", en: "Corporate" },
+  "pricing.cta": { uz: "Tanlash", en: "Choose plan" },
 
   "hero.eyebrow": { uz: "USA × O'ZBEKISTON BIZNES KO'PRIGI", en: "USA × UZBEKISTAN BUSINESS BRIDGE" },
   "hero.title1": { uz: "AQSH va O'zbekiston o'rtasidagi", en: "Your trusted bridge between" },
