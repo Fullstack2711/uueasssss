@@ -3,6 +3,16 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
+async function assertAdmin(userId: string) {
+  const { data, error } = await supabaseAdmin
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId)
+    .eq("role", "admin")
+    .maybeSingle();
+  if (error || !data) throw new Error("Not authorized");
+}
+
 export const listNews = createServerFn({ method: "GET" })
   .inputValidator((d) =>
     z.object({ limit: z.number().int().min(1).max(50).optional() }).optional().parse(d),
@@ -33,11 +43,7 @@ export const upsertNews = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => NewsSchema.parse(d))
   .handler(async ({ data, context }) => {
-    const { data: isAdmin } = await context.supabase.rpc("has_role" as never, {
-      _user_id: context.userId,
-      _role: "admin",
-    } as never);
-    if (!isAdmin) throw new Error("Not authorized");
+    await assertAdmin(context.userId);
 
     const payload = {
       title_uz: data.title_uz,
@@ -68,11 +74,7 @@ export const deleteNews = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
-    const { data: isAdmin } = await context.supabase.rpc("has_role" as never, {
-      _user_id: context.userId,
-      _role: "admin",
-    } as never);
-    if (!isAdmin) throw new Error("Not authorized");
+    await assertAdmin(context.userId);
     const { error } = await supabaseAdmin.from("news").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };

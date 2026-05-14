@@ -111,6 +111,6 @@ export const getAnalytics = createServerFn({ method: "GET" })
       byCountry,
       byDay,
       recent: recentRes.data ?? [],
-      isAdmin: !!isAdmin.data,
+      isAdmin,
     };
   });
