@@ -1,53 +1,44 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, useCallback } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { adminExists, claimFirstAdmin } from "@/lib/admin.functions";
 import { getAnalytics } from "@/lib/analytics.functions";
 import { listNews, upsertNews, deleteNews } from "@/lib/news.functions";
 import { listMessages, markMessageRead, deleteMessage } from "@/lib/contact.functions";
 import {
   BarChart3, Newspaper, Mail, LogOut, Loader2, Plus, Pencil, Trash2,
-  Globe2, MousePointerClick, Eye, Check, X, Shield,
+  Globe2, MousePointerClick, Eye, Check, X, Shield, LogIn, UserPlus,
 } from "lucide-react";
 
-export const Route = createFileRoute("/admin/dashboard")({
+export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "Admin Dashboard — UUEA" },
+      { title: "Admin — UUEA" },
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
-  component: DashboardPage,
+  component: AdminPage,
 });
 
-type Tab = "analytics" | "news" | "messages";
-
-function DashboardPage() {
-  const navigate = useNavigate();
-  const [tab, setTab] = useState<Tab>("analytics");
+function AdminPage() {
   const [ready, setReady] = useState(false);
+  const [authed, setAuthed] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
       const { data } = await supabase.auth.getSession();
-      if (!data.session) {
-        navigate({ to: "/admin/login" });
-        return;
-      }
-      setEmail(data.session.user.email ?? null);
+      setAuthed(!!data.session);
+      setEmail(data.session?.user.email ?? null);
       setReady(true);
     })();
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
-      if (!s) navigate({ to: "/admin/login" });
+      setAuthed(!!s);
+      setEmail(s?.user.email ?? null);
     });
     return () => sub.subscription.unsubscribe();
-  }, [navigate]);
-
-  const logout = async () => {
-    await supabase.auth.signOut();
-    navigate({ to: "/admin/login" });
-  };
+  }, []);
 
   if (!ready) {
     return (
@@ -56,6 +47,121 @@ function DashboardPage() {
       </div>
     );
   }
+
+  return authed ? <Dashboard email={email} /> : <LoginForm />;
+}
+
+/* ---------------- Login ---------------- */
+
+function LoginForm() {
+  const [mode, setMode] = useState<"loading" | "login" | "signup">("loading");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const r = await adminExists();
+      if (!mounted) return;
+      setMode(r.exists ? "login" : "signup");
+    })();
+    return () => { mounted = false; };
+  }, []);
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setBusy(true);
+    try {
+      if (mode === "signup") {
+        const { data, error } = await supabase.auth.signUp({
+          email, password,
+          options: { emailRedirectTo: `${window.location.origin}/admin` },
+        });
+        if (error) throw error;
+        const userId = data.user?.id;
+        if (!userId) throw new Error("Foydalanuvchi yaratilmadi");
+        await claimFirstAdmin({ data: { user_id: userId } });
+        if (!data.session) {
+          await supabase.auth.signInWithPassword({ email, password });
+        }
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Xatolik yuz berdi");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  if (mode === "loading") {
+    return (
+      <div className="min-h-screen grid place-items-center bg-background">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen grid place-items-center bg-background px-4">
+      <div className="w-full max-w-md">
+        <div className="mb-6 text-center">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-moon shadow-glow mb-3">
+            <Shield className="h-6 w-6 text-primary-foreground" />
+          </div>
+          <h1 className="text-2xl font-display font-bold">UUEA Admin</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {mode === "signup" ? "Birinchi admin hisobini yarating" : "Boshqaruv paneliga kirish"}
+          </p>
+        </div>
+
+        <form onSubmit={onSubmit} className="rounded-2xl glass premium-border p-6 space-y-4">
+          <div>
+            <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">Email</label>
+            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm focus:outline-none focus:border-primary" />
+          </div>
+          <div>
+            <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">Parol</label>
+            <input type="password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm focus:outline-none focus:border-primary" />
+            {mode === "signup" && (
+              <p className="mt-2 text-xs text-muted-foreground">Kamida 8 ta belgi. Bu hisob — yagona admin.</p>
+            )}
+          </div>
+
+          {error && (
+            <div className="rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              {error}
+            </div>
+          )}
+
+          <button type="submit" disabled={busy}
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-gradient-moon text-primary-foreground font-medium shadow-moon hover:shadow-glow transition-all disabled:opacity-60">
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> :
+              mode === "signup" ? <><UserPlus className="h-4 w-4" /> Admin yaratish</> :
+              <><LogIn className="h-4 w-4" /> Kirish</>}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Dashboard ---------------- */
+
+type Tab = "analytics" | "news" | "messages";
+
+function Dashboard({ email }: { email: string | null }) {
+  const [tab, setTab] = useState<Tab>("analytics");
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+  };
 
   const tabs: { id: Tab; label: string; Icon: typeof BarChart3 }[] = [
     { id: "analytics", label: "Statistika", Icon: BarChart3 },
@@ -76,25 +182,18 @@ function DashboardPage() {
               <div className="text-[11px] text-muted-foreground truncate max-w-[180px]">{email}</div>
             </div>
           </div>
-          <button
-            onClick={logout}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs border border-border hover:bg-secondary transition"
-          >
+          <button onClick={logout}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs border border-border hover:bg-secondary transition">
             <LogOut className="h-3.5 w-3.5" /> Chiqish
           </button>
         </div>
         <div className="container mx-auto px-2 sm:px-6 pb-2 overflow-x-auto">
           <div className="inline-flex gap-1 p-1 rounded-full glass premium-border">
             {tabs.map(({ id, label, Icon }) => (
-              <button
-                key={id}
-                onClick={() => setTab(id)}
+              <button key={id} onClick={() => setTab(id)}
                 className={`inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm transition ${
-                  tab === id
-                    ? "bg-gradient-moon text-primary-foreground shadow-moon"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
+                  tab === id ? "bg-gradient-moon text-primary-foreground shadow-moon" : "text-muted-foreground hover:text-foreground"
+                }`}>
                 <Icon className="h-3.5 w-3.5" /> {label}
               </button>
             ))}
@@ -128,9 +227,7 @@ function AnalyticsPanel() {
     }
   }, [fetchAnalytics]);
 
-  useEffect(() => {
-    reload();
-  }, [reload]);
+  useEffect(() => { reload(); }, [reload]);
 
   if (loading || !data) {
     return <div className="grid place-items-center py-20"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
@@ -149,20 +246,13 @@ function AnalyticsPanel() {
 
       <div className="grid lg:grid-cols-2 gap-4">
         <Card title="Oxirgi 30 kun (kunlik)">
-          {data.byDay.length === 0 ? (
-            <Empty text="Hali tashriflar yo'q" />
-          ) : (
+          {data.byDay.length === 0 ? <Empty text="Hali tashriflar yo'q" /> : (
             <div className="flex items-end gap-1 h-40">
               {data.byDay.map((d) => (
                 <div key={d.day} className="flex-1 flex flex-col items-center gap-1 group">
-                  <div
-                    className="w-full rounded-t bg-gradient-moon transition-all"
-                    style={{ height: `${(d.count / maxDay) * 100}%`, minHeight: 2 }}
-                    title={`${d.day}: ${d.count}`}
-                  />
-                  <div className="text-[8px] text-muted-foreground hidden group-hover:block">
-                    {d.day.slice(5)}
-                  </div>
+                  <div className="w-full rounded-t bg-gradient-moon transition-all"
+                    style={{ height: `${(d.count / maxDay) * 100}%`, minHeight: 2 }} title={`${d.day}: ${d.count}`} />
+                  <div className="text-[8px] text-muted-foreground hidden group-hover:block">{d.day.slice(5)}</div>
                 </div>
               ))}
             </div>
@@ -170,9 +260,7 @@ function AnalyticsPanel() {
         </Card>
 
         <Card title="Top davlatlar (30 kun)">
-          {data.byCountry.length === 0 ? (
-            <Empty text="Hali ma'lumot yo'q" />
-          ) : (
+          {data.byCountry.length === 0 ? <Empty text="Hali ma'lumot yo'q" /> : (
             <div className="space-y-2.5">
               {data.byCountry.map((c) => (
                 <div key={c.country}>
@@ -191,9 +279,7 @@ function AnalyticsPanel() {
       </div>
 
       <Card title="So'nggi tashriflar">
-        {data.recent.length === 0 ? (
-          <Empty text="Hali tashriflar yo'q" />
-        ) : (
+        {data.recent.length === 0 ? <Empty text="Hali tashriflar yo'q" /> : (
           <div className="overflow-x-auto -mx-4 sm:mx-0">
             <table className="min-w-full text-xs sm:text-sm">
               <thead className="text-muted-foreground text-left">
@@ -291,10 +377,8 @@ function NewsPanel() {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-display font-semibold">Yangiliklar ({items.length})</h2>
-        <button
-          onClick={() => setEditing({ title_uz: "", title_en: "", body_uz: "", body_en: "", tag: "" })}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-moon text-primary-foreground text-sm shadow-moon"
-        >
+        <button onClick={() => setEditing({ title_uz: "", title_en: "", body_uz: "", body_en: "", tag: "" })}
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-moon text-primary-foreground text-sm shadow-moon">
           <Plus className="h-4 w-4" /> Yangi
         </button>
       </div>
@@ -412,16 +496,12 @@ function MessagesPanel() {
                 <p className="text-sm whitespace-pre-wrap">{m.message}</p>
               </div>
               <div className="flex flex-col gap-1 shrink-0">
-                <button
-                  onClick={async () => { await markRead({ data: { id: m.id, is_read: !m.is_read } }); reload(); }}
-                  className="p-2 rounded-lg hover:bg-secondary" title={m.is_read ? "O'qilmagan deb belgilash" : "O'qilgan deb belgilash"}
-                >
+                <button onClick={async () => { await markRead({ data: { id: m.id, is_read: !m.is_read } }); reload(); }}
+                  className="p-2 rounded-lg hover:bg-secondary" title={m.is_read ? "O'qilmagan deb belgilash" : "O'qilgan deb belgilash"}>
                   <Check className={`h-3.5 w-3.5 ${m.is_read ? "text-primary" : ""}`} />
                 </button>
-                <button
-                  onClick={async () => { if (confirm("O'chirilsinmi?")) { await removeMsg({ data: { id: m.id } }); reload(); } }}
-                  className="p-2 rounded-lg hover:bg-destructive/20 text-destructive"
-                >
+                <button onClick={async () => { if (confirm("O'chirilsinmi?")) { await removeMsg({ data: { id: m.id } }); reload(); } }}
+                  className="p-2 rounded-lg hover:bg-destructive/20 text-destructive">
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>
               </div>
