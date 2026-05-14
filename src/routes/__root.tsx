@@ -4,9 +4,14 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { Toaster } from "@/components/ui/sonner";
+import { trackVisit } from "@/lib/analytics.functions";
 
 import appCss from "../styles.css?url";
 
