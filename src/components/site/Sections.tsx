@@ -446,6 +446,29 @@ export function Regions() {
 export function Contact() {
   const { t, lang } = useI18n();
   const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [form, setForm] = useState({ name: "", company: "", email: "", phone: "", message: "" });
+  const send = useServerFn(submitContact);
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.message.trim()) {
+      toast.error(lang === "uz" ? "Ism va xabar majburiy" : "Name and message are required");
+      return;
+    }
+    setBusy(true);
+    try {
+      await send({ data: { name: form.name, company: form.company, email: form.email, phone: form.phone, message: form.message } });
+      setSent(true);
+      setForm({ name: "", company: "", email: "", phone: "", message: "" });
+      toast.success(lang === "uz" ? "Xabaringiz yuborildi!" : "Your message has been sent!");
+    } catch {
+      toast.error(lang === "uz" ? "Xatolik. Qayta urinib ko'ring" : "Failed. Please try again");
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <section id="contact" className="py-20 md:py-32 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-primary/15 blur-[140px]" />
@@ -471,25 +494,21 @@ export function Contact() {
             ))}
           </div>
 
-          <form
-            onSubmit={(e) => { e.preventDefault(); setSent(true); }}
-            className="lg:col-span-3 p-6 md:p-8 rounded-2xl md:rounded-3xl glass premium-border space-y-4"
-          >
+          <form onSubmit={onSubmit} className="lg:col-span-3 p-6 md:p-8 rounded-2xl md:rounded-3xl glass premium-border space-y-4">
             <div className="grid sm:grid-cols-2 gap-4">
-              <Field label={t("contact.name")} />
-              <Field label={t("contact.company")} />
-              <Field label={t("contact.email")} type="email" />
-              <Field label={t("contact.phone")} type="tel" />
+              <Field label={t("contact.name")} value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
+              <Field label={t("contact.company")} value={form.company} onChange={(v) => setForm({ ...form, company: v })} />
+              <Field label={t("contact.email")} type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
+              <Field label={t("contact.phone")} type="tel" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} />
             </div>
             <div>
               <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">{t("contact.msg")}</label>
-              <textarea rows={4} className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm md:text-base focus:outline-none focus:border-primary transition" />
+              <textarea rows={4} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
+                className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm md:text-base focus:outline-none focus:border-primary transition" />
             </div>
-            <button
-              type="submit"
-              className="btn-shimmer w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 md:py-4 rounded-full bg-gradient-moon text-primary-foreground text-sm md:text-base font-medium shadow-moon hover:shadow-glow transition-all hover:-translate-y-0.5"
-            >
-              {sent ? <><Check className="h-4 w-4"/> Sent</> : <>{t("contact.send")} <Send className="h-4 w-4" /></>}
+            <button type="submit" disabled={busy}
+              className="btn-shimmer w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 md:py-4 rounded-full bg-gradient-moon text-primary-foreground text-sm md:text-base font-medium shadow-moon hover:shadow-glow transition-all hover:-translate-y-0.5 disabled:opacity-60">
+              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : sent ? <><Check className="h-4 w-4"/> {lang === "uz" ? "Yuborildi" : "Sent"}</> : <>{t("contact.send")} <Send className="h-4 w-4" /></>}
             </button>
           </form>
         </div>
@@ -498,91 +517,79 @@ export function Contact() {
   );
 }
 
-function Field({ label, type = "text" }: { label: string; type?: string }) {
+function Field({ label, type = "text", value, onChange, required }: { label: string; type?: string; value?: string; onChange?: (v: string) => void; required?: boolean }) {
   return (
     <div>
       <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">{label}</label>
-      <input type={type} className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm md:text-base focus:outline-none focus:border-primary transition" />
+      <input type={type} required={required} value={value ?? ""} onChange={(e) => onChange?.(e.target.value)}
+        className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm md:text-base focus:outline-none focus:border-primary transition" />
     </div>
   );
 }
 
 /* ---------- NEWS ---------- */
+type NewsItem = {
+  id: string; tag: string | null; published_at: string;
+  title_uz: string; title_en: string; body_uz: string; body_en: string; image_url: string | null;
+};
+
 export function News() {
   const { t, lang } = useI18n();
-  const items = [
-    {
-      tag: lang === "uz" ? "Forum" : "Forum",
-      date: "2026-04-18",
-      titleUz: "UUEA Annual Forum 2026 — Chicago",
-      titleEn: "UUEA Annual Forum 2026 — Chicago",
-      bodyUz: "Yillik forum 500+ tadbirkorni birlashtiradi. Investitsiya sessiyalari va B2B uchrashuvlar.",
-      bodyEn: "The annual forum brings together 500+ entrepreneurs. Investment sessions and B2B meetings.",
-    },
-    {
-      tag: lang === "uz" ? "Bitim" : "Deal",
-      date: "2026-03-02",
-      titleUz: "Tashkent Textile AQSHga $3.2M eksport shartnomasi imzoladi",
-      titleEn: "Tashkent Textile signs $3.2M export deal with US retailer",
-      bodyUz: "UUEA vositachiligida yangi yirik shartnoma — yiliga 1.2M mahsulot.",
-      bodyEn: "Brokered by UUEA — 1.2M units per year under the new agreement.",
-    },
-    {
-      tag: lang === "uz" ? "Investitsiya" : "Investment",
-      date: "2026-01-25",
-      titleUz: "UzTech startapi Silicon Valley fondidan $1.5M jalb qildi",
-      titleEn: "UzTech startup raises $1.5M from a Silicon Valley fund",
-      bodyUz: "AI yo'nalishidagi mahalliy startap birinchi xalqaro raundni yopdi.",
-      bodyEn: "A local AI startup closed its first international funding round.",
-    },
-  ];
-  const monthsUz = ["Yan", "Fev", "Mar", "Apr", "May", "Iyun", "Iyul", "Avg", "Sen", "Okt", "Noy", "Dek"];
-  const monthsEn = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const fmt = (d: string) => {
-    const [y, m, day] = d.split("-").map(Number);
-    const mo = (lang === "uz" ? monthsUz : monthsEn)[m - 1];
-    return `${day} ${mo} ${y}`;
-  };
+  const fetchNews = useServerFn(listNews);
+  const [items, setItems] = useState<NewsItem[] | null>(null);
+
+  useEffect(() => {
+    fetchNews({ data: { limit: 3 } }).then((r) => setItems(r.items as NewsItem[])).catch(() => setItems([]));
+  }, [fetchNews]);
+
+  const fmt = (d: string) =>
+    new Date(d).toLocaleDateString(lang === "uz" ? "uz-UZ" : "en-US", { day: "numeric", month: "short", year: "numeric" });
+
+  if (items !== null && items.length === 0) return null;
+
   return (
     <section id="news" className="relative py-20 md:py-32 overflow-hidden">
       <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-primary/10 blur-[140px]" />
       <div className="container relative mx-auto px-6">
         <SectionHeader eyebrow={t("news.eyebrow")} title={t("news.title")} />
-        <div className="mt-12 md:mt-16 grid md:grid-cols-3 gap-5 md:gap-6">
-          {items.map((n, i) => (
-            <Reveal
-              key={i}
-              delay={i * 120}
-              as="article"
-              className="group relative p-6 md:p-7 rounded-2xl md:rounded-3xl glass premium-border glow-border spotlight overflow-hidden hover:-translate-y-1 transition-all duration-500 flex flex-col"
-            >
-              <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-primary/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative flex items-center justify-between gap-2 mb-4 md:mb-5">
-                <span className="text-[10px] tracking-widest uppercase px-2.5 md:px-3 py-1 rounded-full border border-primary/30 text-primary">
-                  {n.tag}
-                </span>
-                <div className="flex items-center gap-1.5 text-[10px] md:text-xs text-muted-foreground">
-                  <Calendar className="h-3.5 w-3.5" /> {fmt(n.date)}
-                </div>
-              </div>
-              <div className="relative h-11 w-11 md:h-12 md:w-12 mb-3 md:mb-4 rounded-xl md:rounded-2xl bg-gradient-moon shadow-glow flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3">
-                <Newspaper className="h-5 w-5 text-primary-foreground icon-pop" />
-              </div>
-              <h3 className="relative text-base md:text-lg font-display font-semibold leading-snug">
-                {lang === "uz" ? n.titleUz : n.titleEn}
-              </h3>
-              <p className="relative mt-2 text-sm text-muted-foreground flex-1">
-                {lang === "uz" ? n.bodyUz : n.bodyEn}
-              </p>
-              <a
-                href="#"
-                className="relative mt-4 md:mt-5 inline-flex items-center gap-2 text-sm text-primary group-hover:translate-x-1 transition-transform"
-              >
-                {t("news.read")} <ArrowRight className="h-4 w-4" />
-              </a>
-            </Reveal>
-          ))}
-        </div>
+        {items === null ? (
+          <div className="grid place-items-center py-16"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
+        ) : (
+          <>
+            <div className="mt-12 md:mt-16 grid md:grid-cols-3 gap-5 md:gap-6">
+              {items.map((n, i) => (
+                <Reveal key={n.id} delay={i * 120} as="article"
+                  className="group relative p-6 md:p-7 rounded-2xl md:rounded-3xl glass premium-border glow-border spotlight overflow-hidden hover:-translate-y-1 transition-all duration-500 flex flex-col">
+                  <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-primary/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative flex items-center justify-between gap-2 mb-4 md:mb-5">
+                    {n.tag && (
+                      <span className="text-[10px] tracking-widest uppercase px-2.5 md:px-3 py-1 rounded-full border border-primary/30 text-primary">
+                        {n.tag}
+                      </span>
+                    )}
+                    <div className="flex items-center gap-1.5 text-[10px] md:text-xs text-muted-foreground ml-auto">
+                      <Calendar className="h-3.5 w-3.5" /> {fmt(n.published_at)}
+                    </div>
+                  </div>
+                  <div className="relative h-11 w-11 md:h-12 md:w-12 mb-3 md:mb-4 rounded-xl md:rounded-2xl bg-gradient-moon shadow-glow flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3">
+                    <Newspaper className="h-5 w-5 text-primary-foreground icon-pop" />
+                  </div>
+                  <h3 className="relative text-base md:text-lg font-display font-semibold leading-snug">
+                    {lang === "uz" ? n.title_uz : n.title_en}
+                  </h3>
+                  <p className="relative mt-2 text-sm text-muted-foreground flex-1 line-clamp-3">
+                    {lang === "uz" ? n.body_uz : n.body_en}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+            <div className="mt-10 text-center">
+              <Link to="/news" className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass premium-border text-sm hover:bg-card/80 transition">
+                {lang === "uz" ? "Barcha yangiliklar" : "All news"} <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
