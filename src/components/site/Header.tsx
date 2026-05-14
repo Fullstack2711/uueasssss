@@ -78,9 +78,24 @@ export function Header() {
           </a>
         </div>
 
-        <button className="lg:hidden text-foreground" onClick={() => setOpen((o) => !o)} aria-label="menu">
-          {open ? <X /> : <Menu />}
-        </button>
+        <div className="flex lg:hidden items-center gap-2">
+          <div className="flex items-center rounded-full border border-border p-0.5 text-[11px]">
+            {(["uz", "en"] as const).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className={`px-2.5 py-1 rounded-full uppercase tracking-wider transition ${
+                  lang === l ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
+          <button className="text-foreground p-1" onClick={() => setOpen((o) => !o)} aria-label="menu">
+            {open ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       {open && (
