@@ -583,11 +583,6 @@ export function News() {
                 </Reveal>
               ))}
             </div>
-            <div className="mt-10 text-center">
-              <Link to="/news" className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass premium-border text-sm hover:bg-card/80 transition">
-                {lang === "uz" ? "Barcha yangiliklar" : "All news"} <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
           </>
         )}
       </div>
