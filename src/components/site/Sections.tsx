@@ -29,8 +29,14 @@ export function Hero() {
 
       <div className="container relative mx-auto px-6 max-w-6xl">
         <div className="animate-fade-up">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs tracking-[0.25em] text-primary uppercase mb-8">
-            <Sparkles className="h-3.5 w-3.5" /> {t("hero.eyebrow")}
+          <div className="inline-flex items-center gap-2.5 sm:gap-3 pl-1 pr-3 sm:pr-5 py-1 sm:py-1.5 rounded-full glass premium-border shadow-glow mb-6 md:mb-8 max-w-full">
+            <span className="inline-flex items-center justify-center h-6 w-6 sm:h-7 sm:w-7 rounded-full bg-gradient-moon shadow-moon shrink-0">
+              <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-primary-foreground" />
+            </span>
+            <span className="text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] uppercase text-foreground/90 font-medium truncate">
+              {t("hero.eyebrow")}
+            </span>
+            <span className="hidden sm:inline-block h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-[1.1] tracking-tight">
