@@ -53,12 +53,14 @@ export const trackClick = createServerFn({ method: "POST" })
 export const getAnalytics = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { supabase } = context;
-    const isAdmin = await supabase.rpc("has_role" as never, {
-      _user_id: context.userId,
-      _role: "admin",
-    } as never);
-    // RLS already enforces but double-check
+    const { data: roleRow } = await supabaseAdmin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    const isAdmin = !!roleRow;
+    if (!isAdmin) throw new Error("Not authorized");
     const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
     const [visitsRes, clicksRes, byCountryRes, byDayRes, recentRes] = await Promise.all([
