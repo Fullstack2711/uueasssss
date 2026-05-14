@@ -11,6 +11,16 @@ const ContactSchema = z.object({
   message: z.string().trim().min(1).max(2000),
 });
 
+async function assertAdmin(userId: string) {
+  const { data, error } = await supabaseAdmin
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId)
+    .eq("role", "admin")
+    .maybeSingle();
+  if (error || !data) throw new Error("Not authorized");
+}
+
 export const submitContact = createServerFn({ method: "POST" })
   .inputValidator((d) => ContactSchema.parse(d))
   .handler(async ({ data }) => {
@@ -28,11 +38,7 @@ export const submitContact = createServerFn({ method: "POST" })
 export const listMessages = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data: isAdmin } = await context.supabase.rpc("has_role" as never, {
-      _user_id: context.userId,
-      _role: "admin",
-    } as never);
-    if (!isAdmin) throw new Error("Not authorized");
+    await assertAdmin(context.userId);
     const { data } = await supabaseAdmin
       .from("contact_messages")
       .select("*")
@@ -47,11 +53,7 @@ export const markMessageRead = createServerFn({ method: "POST" })
     z.object({ id: z.string().uuid(), is_read: z.boolean() }).parse(d),
   )
   .handler(async ({ data, context }) => {
-    const { data: isAdmin } = await context.supabase.rpc("has_role" as never, {
-      _user_id: context.userId,
-      _role: "admin",
-    } as never);
-    if (!isAdmin) throw new Error("Not authorized");
+    await assertAdmin(context.userId);
     await supabaseAdmin
       .from("contact_messages")
       .update({ is_read: data.is_read })
@@ -63,11 +65,7 @@ export const deleteMessage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
-    const { data: isAdmin } = await context.supabase.rpc("has_role" as never, {
-      _user_id: context.userId,
-      _role: "admin",
-    } as never);
-    if (!isAdmin) throw new Error("Not authorized");
+    await assertAdmin(context.userId);
     await supabaseAdmin.from("contact_messages").delete().eq("id", data.id);
     return { ok: true };
   });
