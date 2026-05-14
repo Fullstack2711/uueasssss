@@ -4,9 +4,14 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { Toaster } from "@/components/ui/sonner";
+import { trackVisit } from "@/lib/analytics.functions";
 
 import appCss from "../styles.css?url";
 
@@ -110,10 +115,21 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const track = useServerFn(trackVisit);
+  const lastTracked = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (pathname.startsWith("/admin")) return;
+    if (lastTracked.current === pathname) return;
+    lastTracked.current = pathname;
+    track({ data: { path: pathname, referrer: document.referrer || null } }).catch(() => {});
+  }, [pathname, track]);
 
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <Toaster />
     </QueryClientProvider>
   );
 }
