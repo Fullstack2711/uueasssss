@@ -14,7 +14,7 @@ export const listNews = createServerFn({ method: "GET" })
       .select("*")
       .order("published_at", { ascending: false })
       .limit(limit);
-    if (error) return { items: [] as Array<Record<string, unknown>> };
+    if (error) return { items: [] };
     return { items: rows ?? [] };
   });
 
