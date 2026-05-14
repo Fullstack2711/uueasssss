@@ -6,14 +6,24 @@ import logo from "@/assets/uuea-logo.png";
 import {
   ArrowRight, Briefcase, Globe2, Scale, TrendingUp, Sparkles, ShieldCheck, Lightbulb,
   Handshake, MapPin, Mail, Phone, Send, Check, Star, ChevronDown, Calendar, Newspaper,
-  Crown, Building2, Gem, Award, Trophy,
+  Crown, Building2, Gem, Award, Trophy, Loader2,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
 import { Reveal } from "./Reveal";
+import { trackClick } from "@/lib/analytics.functions";
+import { submitContact } from "@/lib/contact.functions";
+import { listNews } from "@/lib/news.functions";
 
 /* ---------- HERO ---------- */
 export function Hero() {
   const { t } = useI18n();
+  const trackBtn = useServerFn(trackClick);
+  const onPlatformClick = () => {
+    trackBtn({ data: { button_id: "visit_platform" } }).catch(() => {});
+  };
   return (
     <section id="top" className="relative min-h-screen flex items-center overflow-hidden pt-28 md:pt-32 pb-16 md:pb-20">
       <img
@@ -61,6 +71,7 @@ export function Hero() {
               href="#"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={onPlatformClick}
               className="btn-shimmer group inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 sm:py-4 rounded-full glass text-foreground text-sm sm:text-base hover:bg-card/80 transition-all premium-border hover:-translate-y-1"
             >
               {t("hero.cta2")}
