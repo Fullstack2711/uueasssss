@@ -33,12 +33,12 @@ export function Header() {
         scrolled ? "glass-strong py-3" : "py-5"
       }`}
     >
-      <div className="container mx-auto px-6 flex items-center justify-between gap-6">
-        <a href="#top" className="flex items-center gap-3 group">
+      <div className="container mx-auto flex items-center justify-between gap-3 pl-3 pr-4 md:gap-6 md:px-6">
+        <a href="#top" className="flex shrink-0 items-center gap-3 group">
           <img
             src="/logo.png"
             alt="UUEA"
-            className="h-16 md:h-24 lg:h-28 w-auto object-contain transition-transform group-hover:scale-105"
+            className="h-24 w-auto shrink-0 origin-left object-contain transition-transform max-md:scale-[1.05] group-hover:scale-105 md:scale-100 lg:h-28"
           />
         </a>
 
