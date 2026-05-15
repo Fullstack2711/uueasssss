@@ -7,13 +7,28 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { nitro } from "nitro/vite";
 
-const isVercel = !!process.env.VERCEL;
+// Vercel / Netlify need the Nitro adapter output. Anything else (local prod, Cloudflare Pages)
+// keeps the default Cloudflare worker build from @lovable.dev/vite-tanstack-config.
+const deployHost = process.env.VERCEL
+  ? "vercel"
+  : process.env.NETLIFY
+    ? "netlify"
+    : null;
+const useNitroAdapter = deployHost !== null;
 
 // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
 // @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
 export default defineConfig({
-  cloudflare: isVercel ? false : undefined,
-  plugins: isVercel ? [nitro()] : undefined,
+  cloudflare: useNitroAdapter ? false : undefined,
+  plugins: useNitroAdapter
+    ? [
+        nitro(
+          deployHost === "netlify"
+            ? { preset: "netlify" }
+            : {},
+        ),
+      ]
+    : undefined,
   tanstackStart: {
     server: { entry: "server" },
   },
