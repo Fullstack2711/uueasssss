@@ -6,8 +6,22 @@ import { getAnalytics } from "@/lib/analytics.functions";
 import { listNews, upsertNews, deleteNews } from "@/lib/news.functions";
 import { listMessages, markMessageRead, deleteMessage } from "@/lib/contact.functions";
 import {
-  BarChart3, Newspaper, Mail, LogOut, Loader2, Plus, Pencil, Trash2,
-  Globe2, MousePointerClick, Eye, Check, X, Shield, LogIn, UserPlus,
+  BarChart3,
+  Newspaper,
+  Mail,
+  LogOut,
+  Loader2,
+  Plus,
+  Pencil,
+  Trash2,
+  Globe2,
+  MousePointerClick,
+  Eye,
+  Check,
+  X,
+  Shield,
+  LogIn,
+  UserPlus,
 } from "lucide-react";
 
 const ADMIN_REQUEST_TIMEOUT_MS = 3000;
@@ -33,10 +47,7 @@ function withTimeout<T>(promise: Promise<T>, label: string): Promise<T> {
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
-    meta: [
-      { title: "Admin — UUEA" },
-      { name: "robots", content: "noindex,nofollow" },
-    ],
+    meta: [{ title: "Admin — UUEA" }, { name: "robots", content: "noindex,nofollow" }],
   }),
   component: AdminPage,
 });
@@ -93,14 +104,14 @@ function LoginForm() {
       } catch (e) {
         if (!mounted) return;
         setError(
-          e instanceof Error
-            ? e.message
-            : "Admin sozlamalarini tekshirishda xatolik yuz berdi",
+          e instanceof Error ? e.message : "Admin sozlamalarini tekshirishda xatolik yuz berdi",
         );
         setMode("login");
       }
     })();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -110,7 +121,8 @@ function LoginForm() {
     try {
       if (mode === "signup") {
         const { data, error } = await supabase.auth.signUp({
-          email, password,
+          email,
+          password,
           options: { emailRedirectTo: `${window.location.origin}/admin` },
         });
         if (error) throw error;
@@ -156,16 +168,33 @@ function LoginForm() {
 
         <form onSubmit={onSubmit} className="rounded-2xl glass premium-border p-6 space-y-4">
           <div>
-            <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">Email</label>
-            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm focus:outline-none focus:border-primary" />
+            <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm focus:outline-none focus:border-primary"
+            />
           </div>
           <div>
-            <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">Parol</label>
-            <input type="password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm focus:outline-none focus:border-primary" />
+            <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">
+              Parol
+            </label>
+            <input
+              type="password"
+              required
+              minLength={8}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm focus:outline-none focus:border-primary"
+            />
             {mode === "signup" && (
-              <p className="mt-2 text-xs text-muted-foreground">Kamida 8 ta belgi. Bu hisob — yagona admin.</p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Kamida 8 ta belgi. Bu hisob — yagona admin.
+              </p>
             )}
           </div>
 
@@ -175,11 +204,22 @@ function LoginForm() {
             </div>
           )}
 
-          <button type="submit" disabled={busy}
-            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-gradient-moon text-primary-foreground font-medium shadow-moon hover:shadow-glow transition-all disabled:opacity-60">
-            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> :
-              mode === "signup" ? <><UserPlus className="h-4 w-4" /> Admin yaratish</> :
-              <><LogIn className="h-4 w-4" /> Kirish</>}
+          <button
+            type="submit"
+            disabled={busy}
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-gradient-moon text-primary-foreground font-medium shadow-moon hover:shadow-glow transition-all disabled:opacity-60"
+          >
+            {busy ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : mode === "signup" ? (
+              <>
+                <UserPlus className="h-4 w-4" /> Admin yaratish
+              </>
+            ) : (
+              <>
+                <LogIn className="h-4 w-4" /> Kirish
+              </>
+            )}
           </button>
         </form>
       </div>
@@ -214,21 +254,30 @@ function Dashboard({ email }: { email: string | null }) {
             </div>
             <div>
               <div className="font-display font-semibold text-sm">UUEA Admin</div>
-              <div className="text-[11px] text-muted-foreground truncate max-w-[180px]">{email}</div>
+              <div className="text-[11px] text-muted-foreground truncate max-w-[180px]">
+                {email}
+              </div>
             </div>
           </div>
-          <button onClick={logout}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs border border-border hover:bg-secondary transition">
+          <button
+            onClick={logout}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs border border-border hover:bg-secondary transition"
+          >
             <LogOut className="h-3.5 w-3.5" /> Chiqish
           </button>
         </div>
         <div className="container mx-auto px-2 sm:px-6 pb-2 overflow-x-auto">
           <div className="inline-flex gap-1 p-1 rounded-full glass premium-border">
             {tabs.map(({ id, label, Icon }) => (
-              <button key={id} onClick={() => setTab(id)}
+              <button
+                key={id}
+                onClick={() => setTab(id)}
                 className={`inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm transition ${
-                  tab === id ? "bg-gradient-moon text-primary-foreground shadow-moon" : "text-muted-foreground hover:text-foreground"
-                }`}>
+                  tab === id
+                    ? "bg-gradient-moon text-primary-foreground shadow-moon"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
                 <Icon className="h-3.5 w-3.5" /> {label}
               </button>
             ))}
@@ -261,10 +310,16 @@ function AnalyticsPanel() {
     }
   }, []);
 
-  useEffect(() => { reload(); }, [reload]);
+  useEffect(() => {
+    reload();
+  }, [reload]);
 
   if (loading || !data) {
-    return <div className="grid place-items-center py-20"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
+    return (
+      <div className="grid place-items-center py-20">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      </div>
+    );
   }
 
   const maxDay = Math.max(1, ...data.byDay.map((d) => d.count));
@@ -274,19 +329,30 @@ function AnalyticsPanel() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         <StatCard Icon={Eye} label="Jami tashriflar" value={data.totalVisits.toLocaleString()} />
-        <StatCard Icon={MousePointerClick} label="Platformaga tashrif (CTA)" value={data.platformClicks.toLocaleString()} />
+        <StatCard
+          Icon={MousePointerClick}
+          label="Platformaga tashrif (CTA)"
+          value={data.platformClicks.toLocaleString()}
+        />
         <StatCard Icon={Globe2} label="Davlatlar" value={String(data.byCountry.length)} />
       </div>
 
       <div className="grid lg:grid-cols-2 gap-4">
         <Card title="Oxirgi 30 kun (kunlik)">
-          {data.byDay.length === 0 ? <Empty text="Hali tashriflar yo'q" /> : (
+          {data.byDay.length === 0 ? (
+            <Empty text="Hali tashriflar yo'q" />
+          ) : (
             <div className="flex items-end gap-1 h-40">
               {data.byDay.map((d) => (
                 <div key={d.day} className="flex-1 flex flex-col items-center gap-1 group">
-                  <div className="w-full rounded-t bg-gradient-moon transition-all"
-                    style={{ height: `${(d.count / maxDay) * 100}%`, minHeight: 2 }} title={`${d.day}: ${d.count}`} />
-                  <div className="text-[8px] text-muted-foreground hidden group-hover:block">{d.day.slice(5)}</div>
+                  <div
+                    className="w-full rounded-t bg-gradient-moon transition-all"
+                    style={{ height: `${(d.count / maxDay) * 100}%`, minHeight: 2 }}
+                    title={`${d.day}: ${d.count}`}
+                  />
+                  <div className="text-[8px] text-muted-foreground hidden group-hover:block">
+                    {d.day.slice(5)}
+                  </div>
                 </div>
               ))}
             </div>
@@ -294,16 +360,23 @@ function AnalyticsPanel() {
         </Card>
 
         <Card title="Top davlatlar (30 kun)">
-          {data.byCountry.length === 0 ? <Empty text="Hali ma'lumot yo'q" /> : (
+          {data.byCountry.length === 0 ? (
+            <Empty text="Hali ma'lumot yo'q" />
+          ) : (
             <div className="space-y-2.5">
               {data.byCountry.map((c) => (
                 <div key={c.country}>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="font-medium">{flagEmoji(c.country)} {c.country}</span>
+                    <span className="font-medium">
+                      {flagEmoji(c.country)} {c.country}
+                    </span>
                     <span className="text-muted-foreground">{c.count}</span>
                   </div>
                   <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-moon" style={{ width: `${(c.count / maxCountry) * 100}%` }} />
+                    <div
+                      className="h-full bg-gradient-moon"
+                      style={{ width: `${(c.count / maxCountry) * 100}%` }}
+                    />
                   </div>
                 </div>
               ))}
@@ -313,7 +386,9 @@ function AnalyticsPanel() {
       </div>
 
       <Card title="So'nggi tashriflar">
-        {data.recent.length === 0 ? <Empty text="Hali tashriflar yo'q" /> : (
+        {data.recent.length === 0 ? (
+          <Empty text="Hali tashriflar yo'q" />
+        ) : (
           <div className="overflow-x-auto -mx-4 sm:mx-0">
             <table className="min-w-full text-xs sm:text-sm">
               <thead className="text-muted-foreground text-left">
@@ -326,15 +401,27 @@ function AnalyticsPanel() {
               </thead>
               <tbody>
                 {data.recent.map((r, i) => {
-                  const row = r as { created_at: string; path: string; country: string | null; referrer: string | null };
+                  const row = r as {
+                    created_at: string;
+                    path: string;
+                    country: string | null;
+                    referrer: string | null;
+                  };
                   return (
                     <tr key={i} className="border-b border-border/50">
                       <td className="py-2 px-3 whitespace-nowrap text-muted-foreground">
-                        {new Date(row.created_at).toLocaleString("uz-UZ", { dateStyle: "short", timeStyle: "short" })}
+                        {new Date(row.created_at).toLocaleString("uz-UZ", {
+                          dateStyle: "short",
+                          timeStyle: "short",
+                        })}
                       </td>
                       <td className="py-2 px-3 font-mono text-xs">{row.path}</td>
-                      <td className="py-2 px-3">{row.country ? `${flagEmoji(row.country)} ${row.country}` : "—"}</td>
-                      <td className="py-2 px-3 hidden md:table-cell text-muted-foreground truncate max-w-[200px]">{row.referrer || "—"}</td>
+                      <td className="py-2 px-3">
+                        {row.country ? `${flagEmoji(row.country)} ${row.country}` : "—"}
+                      </td>
+                      <td className="py-2 px-3 hidden md:table-cell text-muted-foreground truncate max-w-[200px]">
+                        {row.referrer || "—"}
+                      </td>
                     </tr>
                   );
                 })}
@@ -350,8 +437,14 @@ function AnalyticsPanel() {
 /* ---------------- News ---------------- */
 
 type NewsRow = {
-  id: string; title_uz: string; title_en: string; body_uz: string; body_en: string;
-  tag: string | null; image_url: string | null; published_at: string;
+  id: string;
+  title_uz: string;
+  title_en: string;
+  body_uz: string;
+  body_en: string;
+  tag: string | null;
+  image_url: string | null;
+  published_at: string;
 };
 
 function NewsPanel() {
@@ -367,7 +460,9 @@ function NewsPanel() {
     setLoading(false);
   }, []);
 
-  useEffect(() => { reload(); }, [reload]);
+  useEffect(() => {
+    reload();
+  }, [reload]);
 
   const onSave = async () => {
     if (!editing) return;
@@ -399,15 +494,23 @@ function NewsPanel() {
   };
 
   if (loading) {
-    return <div className="grid place-items-center py-20"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
+    return (
+      <div className="grid place-items-center py-20">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      </div>
+    );
   }
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-display font-semibold">Yangiliklar ({items.length})</h2>
-        <button onClick={() => setEditing({ title_uz: "", title_en: "", body_uz: "", body_en: "", tag: "" })}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-moon text-primary-foreground text-sm shadow-moon">
+        <button
+          onClick={() =>
+            setEditing({ title_uz: "", title_en: "", body_uz: "", body_en: "", tag: "" })
+          }
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-moon text-primary-foreground text-sm shadow-moon"
+        >
           <Plus className="h-4 w-4" /> Yangi
         </button>
       </div>
@@ -427,8 +530,18 @@ function NewsPanel() {
                   <div className="text-xs text-muted-foreground truncate">{n.title_en}</div>
                 </div>
                 <div className="flex gap-1 shrink-0">
-                  <button onClick={() => setEditing(n)} className="p-2 rounded-lg hover:bg-secondary"><Pencil className="h-3.5 w-3.5" /></button>
-                  <button onClick={() => onDelete(n.id)} className="p-2 rounded-lg hover:bg-destructive/20 text-destructive"><Trash2 className="h-3.5 w-3.5" /></button>
+                  <button
+                    onClick={() => setEditing(n)}
+                    className="p-2 rounded-lg hover:bg-secondary"
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    onClick={() => onDelete(n.id)}
+                    className="p-2 rounded-lg hover:bg-destructive/20 text-destructive"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
                 </div>
               </div>
             </div>
@@ -440,30 +553,78 @@ function NewsPanel() {
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur grid place-items-center p-4 overflow-y-auto">
           <div className="bg-background border border-border rounded-2xl w-full max-w-2xl my-8">
             <div className="flex justify-between items-center px-5 py-4 border-b border-border">
-              <h3 className="font-display font-semibold">{editing.id ? "Tahrirlash" : "Yangi yangilik"}</h3>
-              <button onClick={() => setEditing(null)} className="p-1.5 rounded-lg hover:bg-secondary"><X className="h-4 w-4" /></button>
+              <h3 className="font-display font-semibold">
+                {editing.id ? "Tahrirlash" : "Yangi yangilik"}
+              </h3>
+              <button
+                onClick={() => setEditing(null)}
+                className="p-1.5 rounded-lg hover:bg-secondary"
+              >
+                <X className="h-4 w-4" />
+              </button>
             </div>
             <div className="p-5 space-y-3">
-              <FieldRow label="Tag (ixtiyoriy)" value={editing.tag || ""} onChange={(v) => setEditing({ ...editing, tag: v })} />
-              <FieldRow label="Sarlavha (UZ)" value={editing.title_uz || ""} onChange={(v) => setEditing({ ...editing, title_uz: v })} />
-              <FieldRow label="Title (EN)" value={editing.title_en || ""} onChange={(v) => setEditing({ ...editing, title_en: v })} />
-              <FieldRow label="Rasm URL (ixtiyoriy)" value={editing.image_url || ""} onChange={(v) => setEditing({ ...editing, image_url: v })} />
+              <FieldRow
+                label="Tag (ixtiyoriy)"
+                value={editing.tag || ""}
+                onChange={(v) => setEditing({ ...editing, tag: v })}
+              />
+              <FieldRow
+                label="Sarlavha (UZ)"
+                value={editing.title_uz || ""}
+                onChange={(v) => setEditing({ ...editing, title_uz: v })}
+              />
+              <FieldRow
+                label="Title (EN)"
+                value={editing.title_en || ""}
+                onChange={(v) => setEditing({ ...editing, title_en: v })}
+              />
+              <FieldRow
+                label="Rasm URL (ixtiyoriy)"
+                value={editing.image_url || ""}
+                onChange={(v) => setEditing({ ...editing, image_url: v })}
+              />
               <div>
-                <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-1.5">Matn (UZ)</label>
-                <textarea rows={4} value={editing.body_uz || ""} onChange={(e) => setEditing({ ...editing, body_uz: e.target.value })}
-                  className="w-full rounded-xl bg-secondary/50 border border-border px-3 py-2 text-sm focus:outline-none focus:border-primary" />
+                <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-1.5">
+                  Matn (UZ)
+                </label>
+                <textarea
+                  rows={4}
+                  value={editing.body_uz || ""}
+                  onChange={(e) => setEditing({ ...editing, body_uz: e.target.value })}
+                  className="w-full rounded-xl bg-secondary/50 border border-border px-3 py-2 text-sm focus:outline-none focus:border-primary"
+                />
               </div>
               <div>
-                <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-1.5">Body (EN)</label>
-                <textarea rows={4} value={editing.body_en || ""} onChange={(e) => setEditing({ ...editing, body_en: e.target.value })}
-                  className="w-full rounded-xl bg-secondary/50 border border-border px-3 py-2 text-sm focus:outline-none focus:border-primary" />
+                <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-1.5">
+                  Body (EN)
+                </label>
+                <textarea
+                  rows={4}
+                  value={editing.body_en || ""}
+                  onChange={(e) => setEditing({ ...editing, body_en: e.target.value })}
+                  className="w-full rounded-xl bg-secondary/50 border border-border px-3 py-2 text-sm focus:outline-none focus:border-primary"
+                />
               </div>
             </div>
             <div className="px-5 py-4 border-t border-border flex justify-end gap-2">
-              <button onClick={() => setEditing(null)} className="px-4 py-2 rounded-full text-sm border border-border">Bekor qilish</button>
-              <button onClick={onSave} disabled={saving}
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-moon text-primary-foreground text-sm shadow-moon disabled:opacity-60">
-                {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} Saqlash
+              <button
+                onClick={() => setEditing(null)}
+                className="px-4 py-2 rounded-full text-sm border border-border"
+              >
+                Bekor qilish
+              </button>
+              <button
+                onClick={onSave}
+                disabled={saving}
+                className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-moon text-primary-foreground text-sm shadow-moon disabled:opacity-60"
+              >
+                {saving ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Check className="h-4 w-4" />
+                )}{" "}
+                Saqlash
               </button>
             </div>
           </div>
@@ -476,8 +637,14 @@ function NewsPanel() {
 /* ---------------- Messages ---------------- */
 
 type MsgRow = {
-  id: string; name: string; company: string | null; email: string | null;
-  phone: string | null; message: string; is_read: boolean; created_at: string;
+  id: string;
+  name: string;
+  company: string | null;
+  email: string | null;
+  phone: string | null;
+  message: string;
+  is_read: boolean;
+  created_at: string;
 };
 
 function MessagesPanel() {
@@ -491,10 +658,16 @@ function MessagesPanel() {
     setLoading(false);
   }, []);
 
-  useEffect(() => { reload(); }, [reload]);
+  useEffect(() => {
+    reload();
+  }, [reload]);
 
   if (loading) {
-    return <div className="grid place-items-center py-20"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
+    return (
+      <div className="grid place-items-center py-20">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      </div>
+    );
   }
 
   return (
@@ -506,28 +679,63 @@ function MessagesPanel() {
         <Empty text="Hali xabarlar yo'q" />
       ) : (
         items.map((m) => (
-          <div key={m.id} className={`rounded-2xl glass premium-border p-4 ${!m.is_read ? "ring-1 ring-primary/40" : ""}`}>
+          <div
+            key={m.id}
+            className={`rounded-2xl glass premium-border p-4 ${!m.is_read ? "ring-1 ring-primary/40" : ""}`}
+          >
             <div className="flex justify-between items-start gap-3">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
                   <span className="font-display font-semibold text-sm">{m.name}</span>
-                  {m.company && <span className="text-xs text-muted-foreground">· {m.company}</span>}
-                  {!m.is_read && <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-primary/20 text-primary">yangi</span>}
+                  {m.company && (
+                    <span className="text-xs text-muted-foreground">· {m.company}</span>
+                  )}
+                  {!m.is_read && (
+                    <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-primary/20 text-primary">
+                      yangi
+                    </span>
+                  )}
                 </div>
                 <div className="text-xs text-muted-foreground flex flex-wrap gap-x-3 gap-y-0.5 mb-2">
-                  {m.email && <a href={`mailto:${m.email}`} className="hover:text-primary">{m.email}</a>}
-                  {m.phone && <a href={`tel:${m.phone}`} className="hover:text-primary">{m.phone}</a>}
-                  <span>{new Date(m.created_at).toLocaleString("uz-UZ", { dateStyle: "short", timeStyle: "short" })}</span>
+                  {m.email && (
+                    <a href={`mailto:${m.email}`} className="hover:text-primary">
+                      {m.email}
+                    </a>
+                  )}
+                  {m.phone && (
+                    <a href={`tel:${m.phone}`} className="hover:text-primary">
+                      {m.phone}
+                    </a>
+                  )}
+                  <span>
+                    {new Date(m.created_at).toLocaleString("uz-UZ", {
+                      dateStyle: "short",
+                      timeStyle: "short",
+                    })}
+                  </span>
                 </div>
                 <p className="text-sm whitespace-pre-wrap">{m.message}</p>
               </div>
               <div className="flex flex-col gap-1 shrink-0">
-                <button onClick={async () => { await markMessageRead({ id: m.id, is_read: !m.is_read }); reload(); }}
-                  className="p-2 rounded-lg hover:bg-secondary" title={m.is_read ? "O'qilmagan deb belgilash" : "O'qilgan deb belgilash"}>
+                <button
+                  onClick={async () => {
+                    await markMessageRead({ id: m.id, is_read: !m.is_read });
+                    reload();
+                  }}
+                  className="p-2 rounded-lg hover:bg-secondary"
+                  title={m.is_read ? "O'qilmagan deb belgilash" : "O'qilgan deb belgilash"}
+                >
                   <Check className={`h-3.5 w-3.5 ${m.is_read ? "text-primary" : ""}`} />
                 </button>
-                <button onClick={async () => { if (confirm("O'chirilsinmi?")) { await deleteMessage({ id: m.id }); reload(); } }}
-                  className="p-2 rounded-lg hover:bg-destructive/20 text-destructive">
+                <button
+                  onClick={async () => {
+                    if (confirm("O'chirilsinmi?")) {
+                      await deleteMessage({ id: m.id });
+                      reload();
+                    }
+                  }}
+                  className="p-2 rounded-lg hover:bg-destructive/20 text-destructive"
+                >
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>
               </div>
@@ -568,12 +776,25 @@ function Empty({ text }: { text: string }) {
   return <div className="text-center py-10 text-sm text-muted-foreground">{text}</div>;
 }
 
-function FieldRow({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+function FieldRow({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
   return (
     <div>
-      <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-1.5">{label}</label>
-      <input value={value} onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl bg-secondary/50 border border-border px-3 py-2 text-sm focus:outline-none focus:border-primary" />
+      <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-1.5">
+        {label}
+      </label>
+      <input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-xl bg-secondary/50 border border-border px-3 py-2 text-sm focus:outline-none focus:border-primary"
+      />
     </div>
   );
 }
@@ -581,5 +802,10 @@ function FieldRow({ label, value, onChange }: { label: string; value: string; on
 function flagEmoji(country: string): string {
   if (!country || country.length !== 2) return "🌐";
   const A = 0x1f1e6;
-  return String.fromCodePoint(...country.toUpperCase().split("").map((c) => A + c.charCodeAt(0) - 65));
+  return String.fromCodePoint(
+    ...country
+      .toUpperCase()
+      .split("")
+      .map((c) => A + c.charCodeAt(0) - 65),
+  );
 }

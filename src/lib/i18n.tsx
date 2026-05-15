@@ -26,7 +26,10 @@ export const dict = {
   "pricing.corporate": { uz: "Korporativ", en: "Corporate" },
   "pricing.cta": { uz: "Tanlash", en: "Choose plan" },
 
-  "hero.eyebrow": { uz: "USA × O'ZBEKISTON BIZNES KO'PRIGI", en: "USA × UZBEKISTAN BUSINESS BRIDGE" },
+  "hero.eyebrow": {
+    uz: "USA × O'ZBEKISTON BIZNES KO'PRIGI",
+    en: "USA × UZBEKISTAN BUSINESS BRIDGE",
+  },
   "hero.title1": { uz: "AQSH va O'zbekiston o'rtasidagi", en: "Your trusted bridge between" },
   "hero.title2": { uz: "ishonchli biznes ko'prigi", en: "the USA and Uzbekistan" },
   "hero.sub": {
@@ -42,28 +45,52 @@ export const dict = {
   "stats.years": { uz: "Yillik tajriba", en: "Years of experience" },
 
   "about.eyebrow": { uz: "BIZ HAQIMIZDA", en: "ABOUT US" },
-  "about.title": { uz: "UUEA — biznes diplomatiyasi sanati", en: "UUEA — the art of business diplomacy" },
+  "about.title": {
+    uz: "UUEA — biznes diplomatiyasi sanati",
+    en: "UUEA — the art of business diplomacy",
+  },
   "about.body": {
     uz: "2015-yildan beri AQSH va O'zbekiston tadbirkorlarini bog'lab, 140+ kompaniyaga xalqaro bozorlarda muvaffaqiyatga erishishda yordam berib kelmoqdamiz.",
     en: "Since 2015 we have connected entrepreneurs from the USA and Uzbekistan, helping 140+ companies succeed on international markets.",
   },
   "about.mission": { uz: "Missiya", en: "Mission" },
-  "about.mission.body": { uz: "Mustahkam biznes ko'prik o'rnatish va savdo aloqalarini rivojlantirish.", en: "Build a strong business bridge and grow trade relations." },
+  "about.mission.body": {
+    uz: "Mustahkam biznes ko'prik o'rnatish va savdo aloqalarini rivojlantirish.",
+    en: "Build a strong business bridge and grow trade relations.",
+  },
   "about.vision": { uz: "Viziya", en: "Vision" },
-  "about.vision.body": { uz: "Ikki davlat o'rtasida yetakchi biznes assotsiatsiya bo'lish.", en: "Be the leading business association between the two nations." },
+  "about.vision.body": {
+    uz: "Ikki davlat o'rtasida yetakchi biznes assotsiatsiya bo'lish.",
+    en: "Be the leading business association between the two nations.",
+  },
   "about.values": { uz: "Qadriyatlar", en: "Values" },
-  "about.values.body": { uz: "Ishonch, innovatsiya va hamkorlik — har bir loyihada.", en: "Trust, innovation and partnership — in every project." },
+  "about.values.body": {
+    uz: "Ishonch, innovatsiya va hamkorlik — har bir loyihada.",
+    en: "Trust, innovation and partnership — in every project.",
+  },
 
   "services.eyebrow": { uz: "XIZMATLARIMIZ", en: "OUR SERVICES" },
   "services.title": { uz: "Premium darajadagi xizmatlar", en: "Premium-grade services" },
   "services.s1.t": { uz: "Eksport-Import konsalting", en: "Export-Import consulting" },
-  "services.s1.b": { uz: "Xalqaro savdo, bojxona va sertifikatsiya bo'yicha to'liq qo'llab-quvvatlash.", en: "Full support for international trade, customs and certification." },
+  "services.s1.b": {
+    uz: "Xalqaro savdo, bojxona va sertifikatsiya bo'yicha to'liq qo'llab-quvvatlash.",
+    en: "Full support for international trade, customs and certification.",
+  },
   "services.s2.t": { uz: "Networking va Forumlar", en: "Networking & Forums" },
-  "services.s2.b": { uz: "Yiliga 12+ B2B uchrashuv, VIP biznes kechalar va xalqaro ko'rgazmalar.", en: "12+ B2B meetings yearly, VIP business nights and global expos." },
+  "services.s2.b": {
+    uz: "Yiliga 12+ B2B uchrashuv, VIP biznes kechalar va xalqaro ko'rgazmalar.",
+    en: "12+ B2B meetings yearly, VIP business nights and global expos.",
+  },
   "services.s3.t": { uz: "Yuridik va Viza yordami", en: "Legal & Visa support" },
-  "services.s3.b": { uz: "B1/B2 vizalar, shartnomalar, IP himoyasi va kompaniyani ro'yxatdan o'tkazish.", en: "B1/B2 visas, contracts, IP protection and company registration." },
+  "services.s3.b": {
+    uz: "B1/B2 vizalar, shartnomalar, IP himoyasi va kompaniyani ro'yxatdan o'tkazish.",
+    en: "B1/B2 visas, contracts, IP protection and company registration.",
+  },
   "services.s4.t": { uz: "Investitsiya va Moliya", en: "Investment & Finance" },
-  "services.s4.b": { uz: "Fond jalb qilish, biznes-reja tahlili va AQSH investorlari bilan ulanish.", en: "Fundraising, business plan analysis and access to US investors." },
+  "services.s4.b": {
+    uz: "Fond jalb qilish, biznes-reja tahlili va AQSH investorlari bilan ulanish.",
+    en: "Fundraising, business plan analysis and access to US investors.",
+  },
 
   "portfolio.eyebrow": { uz: "PORTFOLIO", en: "PORTFOLIO" },
   "portfolio.title": { uz: "Muvaffaqiyatli loyihalarimiz", en: "Our successful projects" },

@@ -16,13 +16,7 @@ export type AnalyticsData = {
   isAdmin: boolean;
 };
 
-export async function trackVisit({
-  path,
-  referrer,
-}: {
-  path: string;
-  referrer?: string | null;
-}) {
+export async function trackVisit({ path, referrer }: { path: string; referrer?: string | null }) {
   const userAgent = typeof navigator === "undefined" ? null : navigator.userAgent.slice(0, 500);
   const { error } = await supabase.from("site_visits").insert({
     path,
@@ -58,7 +52,11 @@ export async function getAnalytics(): Promise<AnalyticsData> {
       .from("button_clicks")
       .select("id", { count: "exact", head: true })
       .eq("button_id", "visit_platform"),
-    supabase.from("site_visits").select("country").gte("created_at", since).not("country", "is", null),
+    supabase
+      .from("site_visits")
+      .select("country")
+      .gte("created_at", since)
+      .not("country", "is", null),
     supabase.from("site_visits").select("created_at").gte("created_at", since),
     supabase
       .from("site_visits")

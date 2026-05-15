@@ -45,7 +45,11 @@ export async function upsertNews(input: z.infer<typeof NewsSchema>) {
     return { ok: true, id: data.id };
   }
 
-  const { data: inserted, error } = await supabase.from("news").insert(payload).select("id").single();
+  const { data: inserted, error } = await supabase
+    .from("news")
+    .insert(payload)
+    .select("id")
+    .single();
   if (error) throw new Error(error.message);
   return { ok: true, id: inserted.id };
 }

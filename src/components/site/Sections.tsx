@@ -2,11 +2,31 @@ import { useI18n } from "@/lib/i18n";
 import heroImg from "@/assets/hero-bridge.jpg";
 import aboutImg from "@/assets/about-handshake.jpg";
 import sectionBg from "@/assets/section-bg.jpg";
-import logo from "@/assets/uuea-logo.png";
 import {
-  ArrowRight, Briefcase, Globe2, Scale, TrendingUp, Sparkles, ShieldCheck, Lightbulb,
-  Handshake, MapPin, Mail, Phone, Send, Check, Star, ChevronDown, Calendar, Newspaper,
-  Crown, Building2, Gem, Award, Trophy, Loader2,
+  ArrowRight,
+  Briefcase,
+  Globe2,
+  Scale,
+  TrendingUp,
+  Sparkles,
+  ShieldCheck,
+  Lightbulb,
+  Handshake,
+  MapPin,
+  Mail,
+  Phone,
+  Send,
+  Check,
+  Star,
+  ChevronDown,
+  Calendar,
+  Newspaper,
+  Crown,
+  Building2,
+  Gem,
+  Award,
+  Trophy,
+  Loader2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
@@ -23,7 +43,10 @@ export function Hero() {
     trackClick({ button_id: "visit_platform" }).catch(() => {});
   };
   return (
-    <section id="top" className="relative min-h-screen flex items-center overflow-hidden pt-28 md:pt-32 pb-16 md:pb-20">
+    <section
+      id="top"
+      className="relative min-h-screen flex items-center overflow-hidden pt-28 md:pt-32 pb-16 md:pb-20"
+    >
       <img
         src={heroImg}
         alt=""
@@ -100,8 +123,12 @@ export function Stats() {
       <div className="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
         {items.map((it, i) => (
           <Reveal key={it.k} delay={i * 100} className="text-center group">
-            <div className="text-2xl sm:text-3xl md:text-5xl font-display font-bold text-gradient-anim stat-glow transition-transform duration-500 group-hover:scale-110">{it.v}</div>
-            <div className="mt-2 text-[10px] sm:text-xs tracking-[0.2em] uppercase text-muted-foreground">{t(it.k)}</div>
+            <div className="text-2xl sm:text-3xl md:text-5xl font-display font-bold text-gradient-anim stat-glow transition-transform duration-500 group-hover:scale-110">
+              {it.v}
+            </div>
+            <div className="mt-2 text-[10px] sm:text-xs tracking-[0.2em] uppercase text-muted-foreground">
+              {t(it.k)}
+            </div>
           </Reveal>
         ))}
       </div>
@@ -136,11 +163,17 @@ export function About() {
           <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight text-gradient">
             {t("about.title")}
           </h2>
-          <p className="mt-5 md:mt-6 text-base md:text-lg text-muted-foreground leading-relaxed">{t("about.body")}</p>
+          <p className="mt-5 md:mt-6 text-base md:text-lg text-muted-foreground leading-relaxed">
+            {t("about.body")}
+          </p>
 
           <div className="mt-10 grid sm:grid-cols-3 gap-4">
             {cards.map(({ Icon, title, body }, i) => (
-              <Reveal key={title} delay={i * 120} className="p-5 rounded-2xl glass premium-border glow-border spotlight hover:-translate-y-1 transition-transform duration-500">
+              <Reveal
+                key={title}
+                delay={i * 120}
+                className="p-5 rounded-2xl glass premium-border glow-border spotlight hover:-translate-y-1 transition-transform duration-500"
+              >
                 <Icon className="h-6 w-6 text-primary icon-pop" />
                 <div className="mt-3 font-display font-semibold">{title}</div>
                 <div className="mt-1 text-sm text-muted-foreground">{body}</div>
@@ -164,7 +197,12 @@ export function Services() {
   ];
   return (
     <section id="services" className="relative py-20 md:py-32 overflow-hidden">
-      <img src={sectionBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-50" loading="lazy" />
+      <img
+        src={sectionBg}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover opacity-50"
+        loading="lazy"
+      />
       <div className="absolute inset-0 bg-background/70" />
       <div className="container relative mx-auto px-6">
         <SectionHeader eyebrow={t("services.eyebrow")} title={t("services.title")} />
@@ -181,9 +219,13 @@ export function Services() {
                   <Icon className="h-6 w-6 md:h-7 md:w-7 text-primary-foreground icon-pop" />
                 </div>
                 <div className="min-w-0">
-                  <div className="text-xs tracking-widest text-primary mb-1.5 md:mb-2">0{i + 1}</div>
+                  <div className="text-xs tracking-widest text-primary mb-1.5 md:mb-2">
+                    0{i + 1}
+                  </div>
                   <h3 className="text-lg md:text-xl font-display font-semibold">{title}</h3>
-                  <p className="mt-2 text-sm md:text-base text-muted-foreground leading-relaxed">{b}</p>
+                  <p className="mt-2 text-sm md:text-base text-muted-foreground leading-relaxed">
+                    {b}
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -237,15 +279,26 @@ export function Portfolio() {
         <SectionHeader eyebrow={t("portfolio.eyebrow")} title={t("portfolio.title")} />
         <div className="mt-12 md:mt-16 grid md:grid-cols-2 gap-5 md:gap-6">
           {projects.map((p, i) => (
-            <Reveal key={i} delay={i * 100} as="article" className="group relative p-6 md:p-8 rounded-2xl md:rounded-3xl glass premium-border glow-border spotlight hover:shadow-moon hover:-translate-y-1 transition-all duration-500">
+            <Reveal
+              key={i}
+              delay={i * 100}
+              as="article"
+              className="group relative p-6 md:p-8 rounded-2xl md:rounded-3xl glass premium-border glow-border spotlight hover:shadow-moon hover:-translate-y-1 transition-all duration-500"
+            >
               <div className="flex items-center justify-between gap-3 mb-5 md:mb-6">
-                <span className="text-[10px] md:text-xs tracking-widest uppercase px-2.5 md:px-3 py-1 rounded-full border border-primary/30 text-primary">{p.tag}</span>
-                <span className="text-xl md:text-2xl font-display font-bold text-gradient-anim stat-glow whitespace-nowrap">{p.stat}</span>
+                <span className="text-[10px] md:text-xs tracking-widest uppercase px-2.5 md:px-3 py-1 rounded-full border border-primary/30 text-primary">
+                  {p.tag}
+                </span>
+                <span className="text-xl md:text-2xl font-display font-bold text-gradient-anim stat-glow whitespace-nowrap">
+                  {p.stat}
+                </span>
               </div>
               <h3 className="text-lg md:text-2xl font-display font-semibold leading-tight">
                 {lang === "uz" ? p.titleUz : p.titleEn}
               </h3>
-              <p className="mt-2 md:mt-3 text-sm md:text-base text-muted-foreground">{lang === "uz" ? p.bodyUz : p.bodyEn}</p>
+              <p className="mt-2 md:mt-3 text-sm md:text-base text-muted-foreground">
+                {lang === "uz" ? p.bodyUz : p.bodyEn}
+              </p>
               <div className="mt-5 md:mt-6 flex items-center gap-2 text-sm text-primary md:opacity-0 md:group-hover:opacity-100 md:group-hover:translate-x-1 transition-all duration-500">
                 {lang === "uz" ? "Batafsil" : "Read more"} <ArrowRight className="h-4 w-4" />
               </div>
@@ -275,9 +328,17 @@ export function Results() {
         <SectionHeader eyebrow={t("results.eyebrow")} title={t("results.title")} />
         <div className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-3 gap-px bg-border rounded-2xl md:rounded-3xl overflow-hidden premium-border">
           {items.map((it, i) => (
-            <Reveal key={it.l} delay={i * 80} className="bg-card p-6 sm:p-8 md:p-10 text-center group hover:bg-secondary transition-colors spotlight">
-              <div className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-gradient-anim stat-glow transition-transform duration-500 group-hover:scale-110">{it.v}</div>
-              <div className="mt-2 md:mt-3 text-[10px] sm:text-xs md:text-sm text-muted-foreground tracking-wider uppercase">{it.l}</div>
+            <Reveal
+              key={it.l}
+              delay={i * 80}
+              className="bg-card p-6 sm:p-8 md:p-10 text-center group hover:bg-secondary transition-colors spotlight"
+            >
+              <div className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-gradient-anim stat-glow transition-transform duration-500 group-hover:scale-110">
+                {it.v}
+              </div>
+              <div className="mt-2 md:mt-3 text-[10px] sm:text-xs md:text-sm text-muted-foreground tracking-wider uppercase">
+                {it.l}
+              </div>
             </Reveal>
           ))}
         </div>
@@ -290,15 +351,24 @@ export function Results() {
 export function Testimonials() {
   const { t, lang } = useI18n();
   const reviews = [
-    { name: "Aziz Rahimov", role: "CEO, Tashkent Textile Group",
+    {
+      name: "Aziz Rahimov",
+      role: "CEO, Tashkent Textile Group",
       uz: "UUEA biznesimizni xalqaro darajaga olib chiqish uchun eng yaxshi hamkor! Eksportimiz 4 baravar oshdi.",
-      en: "UUEA is the best partner to take our business international. Exports grew 4×." },
-    { name: "John Peterson", role: "COO, American Logistics Inc.",
+      en: "UUEA is the best partner to take our business international. Exports grew 4×.",
+    },
+    {
+      name: "John Peterson",
+      role: "COO, American Logistics Inc.",
       uz: "Toshkentda ofis ochishda professional yordam berishdi — 6 oy ichida 50+ ish o'rni yaratdik.",
-      en: "Professional support opening our Tashkent office — 50+ jobs in 6 months." },
-    { name: "Sherzod Aliyev", role: "Director, Samarkand Organic",
+      en: "Professional support opening our Tashkent office — 50+ jobs in 6 months.",
+    },
+    {
+      name: "Sherzod Aliyev",
+      role: "Director, Samarkand Organic",
       uz: "Networking forumlarida 5 ta hamkor topdim. Savdo hajmim 3 baravar oshdi!",
-      en: "Found 5 partners at networking forums. Sales tripled!" },
+      en: "Found 5 partners at networking forums. Sales tripled!",
+    },
   ];
   return (
     <section id="testimonials" className="py-20 md:py-32">
@@ -306,11 +376,19 @@ export function Testimonials() {
         <SectionHeader eyebrow={t("testi.eyebrow")} title={t("testi.title")} />
         <div className="mt-12 md:mt-16 grid md:grid-cols-3 gap-5 md:gap-6">
           {reviews.map((r, i) => (
-            <Reveal key={r.name} delay={i * 120} className="p-6 md:p-8 rounded-2xl md:rounded-3xl glass premium-border glow-border spotlight flex flex-col hover:-translate-y-1 transition-transform duration-500">
+            <Reveal
+              key={r.name}
+              delay={i * 120}
+              className="p-6 md:p-8 rounded-2xl md:rounded-3xl glass premium-border glow-border spotlight flex flex-col hover:-translate-y-1 transition-transform duration-500"
+            >
               <div className="flex gap-1 text-primary mb-3 md:mb-4">
-                {Array.from({ length: 5 }).map((_, idx) => <Star key={idx} className="h-4 w-4 fill-current" />)}
+                {Array.from({ length: 5 }).map((_, idx) => (
+                  <Star key={idx} className="h-4 w-4 fill-current" />
+                ))}
               </div>
-              <p className="text-sm md:text-base text-foreground/90 leading-relaxed flex-1">"{lang === "uz" ? r.uz : r.en}"</p>
+              <p className="text-sm md:text-base text-foreground/90 leading-relaxed flex-1">
+                "{lang === "uz" ? r.uz : r.en}"
+              </p>
               <div className="mt-5 md:mt-6 pt-5 md:pt-6 border-t border-border">
                 <div className="font-display font-semibold">{r.name}</div>
                 <div className="text-xs md:text-sm text-muted-foreground">{r.role}</div>
@@ -327,21 +405,36 @@ export function Testimonials() {
 export function FAQ() {
   const { t, lang } = useI18n();
   const items = [
-    { q_uz: "A'zolik badali qancha?", q_en: "How much is the membership?",
+    {
+      q_uz: "A'zolik badali qancha?",
+      q_en: "How much is the membership?",
       a_uz: "Asosiy: $500/yil, Premium: $1,200/yil. Premium paketga barcha forumlar va to'liq yuridik yordam kiradi.",
-      a_en: "Basic: $500/year, Premium: $1,200/year. Premium includes all forums and full legal support." },
-    { q_uz: "A'zo bo'lish talablari nima?", q_en: "What are the membership requirements?",
+      a_en: "Basic: $500/year, Premium: $1,200/year. Premium includes all forums and full legal support.",
+    },
+    {
+      q_uz: "A'zo bo'lish talablari nima?",
+      q_en: "What are the membership requirements?",
       a_uz: "AQSH yoki O'zbekistonda rasmiy ro'yxatdan o'tgan kompaniya bo'lishi kerak.",
-      a_en: "A legally registered company in the USA or Uzbekistan." },
-    { q_uz: "Viza olishda yordam berasizmi?", q_en: "Do you help with visas?",
+      a_en: "A legally registered company in the USA or Uzbekistan.",
+    },
+    {
+      q_uz: "Viza olishda yordam berasizmi?",
+      q_en: "Do you help with visas?",
       a_uz: "Ha, B1/B2 biznes vizalari bo'yicha to'liq qo'llab-quvvatlashni taqdim etamiz.",
-      a_en: "Yes, we provide full B1/B2 business visa support." },
-    { q_uz: "Startaplarga qanday yordam bor?", q_en: "What support do startups get?",
+      a_en: "Yes, we provide full B1/B2 business visa support.",
+    },
+    {
+      q_uz: "Startaplarga qanday yordam bor?",
+      q_en: "What support do startups get?",
       a_uz: "Maxsus investitsiya dasturlari, mentorlik va Silicon Valley aloqalar.",
-      a_en: "Dedicated investment programs, mentoring and Silicon Valley access." },
-    { q_uz: "Qanday imtiyozlar mavjud?", q_en: "What benefits are included?",
+      a_en: "Dedicated investment programs, mentoring and Silicon Valley access.",
+    },
+    {
+      q_uz: "Qanday imtiyozlar mavjud?",
+      q_en: "What benefits are included?",
       a_uz: "Forumlar, bepul konsultatsiya, B2B networking, viza yordam va PR imkoniyatlari.",
-      a_en: "Forums, free consulting, B2B networking, visa support, PR opportunities." },
+      a_en: "Forums, free consulting, B2B networking, visa support, PR opportunities.",
+    },
   ];
   const [open, setOpen] = useState<number | null>(0);
   return (
@@ -357,12 +450,20 @@ export function FAQ() {
                   onClick={() => setOpen(active ? null : i)}
                   className="w-full text-left p-5 md:p-6 flex items-center justify-between gap-3 md:gap-4"
                 >
-                  <span className="font-display font-medium text-base md:text-lg">{lang === "uz" ? it.q_uz : it.q_en}</span>
-                  <ChevronDown className={`h-5 w-5 shrink-0 text-primary transition-transform ${active ? "rotate-180" : ""}`} />
+                  <span className="font-display font-medium text-base md:text-lg">
+                    {lang === "uz" ? it.q_uz : it.q_en}
+                  </span>
+                  <ChevronDown
+                    className={`h-5 w-5 shrink-0 text-primary transition-transform ${active ? "rotate-180" : ""}`}
+                  />
                 </button>
-                <div className={`grid transition-all duration-300 ${active ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+                <div
+                  className={`grid transition-all duration-300 ${active ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+                >
                   <div className="overflow-hidden">
-                    <p className="px-5 md:px-6 pb-5 md:pb-6 text-sm md:text-base text-muted-foreground leading-relaxed">{lang === "uz" ? it.a_uz : it.a_en}</p>
+                    <p className="px-5 md:px-6 pb-5 md:pb-6 text-sm md:text-base text-muted-foreground leading-relaxed">
+                      {lang === "uz" ? it.a_uz : it.a_en}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -394,7 +495,9 @@ export function Process() {
               <div className="mx-auto h-12 w-12 md:h-14 md:w-14 rounded-2xl bg-gradient-moon shadow-glow flex items-center justify-center moon-ring transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3">
                 <s.Icon className="h-5 w-5 md:h-6 md:w-6 text-primary-foreground icon-pop" />
               </div>
-              <div className="mt-2 text-[10px] md:text-xs tracking-widest text-primary">STEP 0{i + 1}</div>
+              <div className="mt-2 text-[10px] md:text-xs tracking-widest text-primary">
+                STEP 0{i + 1}
+              </div>
               <div className="mt-2 font-display font-semibold text-base md:text-lg">{s.t}</div>
               <div className="mt-1 text-xs md:text-sm text-muted-foreground">{s.b}</div>
             </Reveal>
@@ -418,16 +521,27 @@ export function Regions() {
         <div className="mt-12 md:mt-16 grid md:grid-cols-2 gap-5 md:gap-6">
           {[
             { title: t("regions.us"), cities: us, flag: "🇺🇸" },
-            { title: t("regions.uz"), cities: lang === "uz" ? uz : ["Tashkent", "Samarkand", "Bukhara", "Andijan"], flag: "🇺🇿" },
+            {
+              title: t("regions.uz"),
+              cities: lang === "uz" ? uz : ["Tashkent", "Samarkand", "Bukhara", "Andijan"],
+              flag: "🇺🇿",
+            },
           ].map((b, i) => (
-            <Reveal key={b.title} delay={i * 150} className="p-6 md:p-10 rounded-2xl md:rounded-3xl glass premium-border glow-border spotlight hover:-translate-y-1 transition-transform duration-500">
+            <Reveal
+              key={b.title}
+              delay={i * 150}
+              className="p-6 md:p-10 rounded-2xl md:rounded-3xl glass premium-border glow-border spotlight hover:-translate-y-1 transition-transform duration-500"
+            >
               <div className="flex items-center gap-3 md:gap-4">
                 <div className="text-3xl md:text-4xl">{b.flag}</div>
                 <h3 className="text-xl md:text-2xl font-display font-semibold">{b.title}</h3>
               </div>
               <ul className="mt-6 md:mt-8 grid grid-cols-2 gap-2 md:gap-3">
                 {b.cities.map((c) => (
-                  <li key={c} className="flex items-center gap-2 md:gap-3 text-sm md:text-base text-foreground/90 hover:text-primary transition-colors">
+                  <li
+                    key={c}
+                    className="flex items-center gap-2 md:gap-3 text-sm md:text-base text-foreground/90 hover:text-primary transition-colors"
+                  >
                     <MapPin className="h-4 w-4 text-primary shrink-0" /> {c}
                   </li>
                 ))}
@@ -483,35 +597,86 @@ export function Contact() {
             {[
               { Icon: Mail, l: "Email", v: "info@uuea.org" },
               { Icon: Phone, l: lang === "uz" ? "Telefon" : "Phone", v: "+1 (312) 555-0199" },
-              { Icon: MapPin, l: lang === "uz" ? "Manzil" : "Address", v: "Chicago, IL · Toshkent, UZ" },
+              {
+                Icon: MapPin,
+                l: lang === "uz" ? "Manzil" : "Address",
+                v: "Chicago, IL · Toshkent, UZ",
+              },
             ].map((c) => (
-              <div key={c.l} className="p-4 md:p-5 rounded-2xl glass premium-border flex items-start gap-3 md:gap-4">
+              <div
+                key={c.l}
+                className="p-4 md:p-5 rounded-2xl glass premium-border flex items-start gap-3 md:gap-4"
+              >
                 <div className="h-10 w-10 rounded-xl bg-gradient-moon flex items-center justify-center shrink-0">
                   <c.Icon className="h-5 w-5 text-primary-foreground" />
                 </div>
                 <div className="min-w-0">
-                  <div className="text-[10px] md:text-xs uppercase tracking-widest text-muted-foreground">{c.l}</div>
+                  <div className="text-[10px] md:text-xs uppercase tracking-widest text-muted-foreground">
+                    {c.l}
+                  </div>
                   <div className="mt-1 text-sm md:text-base font-medium break-words">{c.v}</div>
                 </div>
               </div>
             ))}
           </div>
 
-          <form onSubmit={onSubmit} className="lg:col-span-3 p-6 md:p-8 rounded-2xl md:rounded-3xl glass premium-border space-y-4">
+          <form
+            onSubmit={onSubmit}
+            className="lg:col-span-3 p-6 md:p-8 rounded-2xl md:rounded-3xl glass premium-border space-y-4"
+          >
             <div className="grid sm:grid-cols-2 gap-4">
-              <Field label={t("contact.name")} value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
-              <Field label={t("contact.company")} value={form.company} onChange={(v) => setForm({ ...form, company: v })} />
-              <Field label={t("contact.email")} type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
-              <Field label={t("contact.phone")} type="tel" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} />
+              <Field
+                label={t("contact.name")}
+                value={form.name}
+                onChange={(v) => setForm({ ...form, name: v })}
+                required
+              />
+              <Field
+                label={t("contact.company")}
+                value={form.company}
+                onChange={(v) => setForm({ ...form, company: v })}
+              />
+              <Field
+                label={t("contact.email")}
+                type="email"
+                value={form.email}
+                onChange={(v) => setForm({ ...form, email: v })}
+              />
+              <Field
+                label={t("contact.phone")}
+                type="tel"
+                value={form.phone}
+                onChange={(v) => setForm({ ...form, phone: v })}
+              />
             </div>
             <div>
-              <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">{t("contact.msg")}</label>
-              <textarea rows={4} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
-                className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm md:text-base focus:outline-none focus:border-primary transition" />
+              <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">
+                {t("contact.msg")}
+              </label>
+              <textarea
+                rows={4}
+                required
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm md:text-base focus:outline-none focus:border-primary transition"
+              />
             </div>
-            <button type="submit" disabled={busy}
-              className="btn-shimmer w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 md:py-4 rounded-full bg-gradient-moon text-primary-foreground text-sm md:text-base font-medium shadow-moon hover:shadow-glow transition-all hover:-translate-y-0.5 disabled:opacity-60">
-              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : sent ? <><Check className="h-4 w-4"/> {lang === "uz" ? "Yuborildi" : "Sent"}</> : <>{t("contact.send")} <Send className="h-4 w-4" /></>}
+            <button
+              type="submit"
+              disabled={busy}
+              className="btn-shimmer w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 md:py-4 rounded-full bg-gradient-moon text-primary-foreground text-sm md:text-base font-medium shadow-moon hover:shadow-glow transition-all hover:-translate-y-0.5 disabled:opacity-60"
+            >
+              {busy ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : sent ? (
+                <>
+                  <Check className="h-4 w-4" /> {lang === "uz" ? "Yuborildi" : "Sent"}
+                </>
+              ) : (
+                <>
+                  {t("contact.send")} <Send className="h-4 w-4" />
+                </>
+              )}
             </button>
           </form>
         </div>
@@ -520,20 +685,45 @@ export function Contact() {
   );
 }
 
-function Field({ label, type = "text", value, onChange, required }: { label: string; type?: string; value?: string; onChange?: (v: string) => void; required?: boolean }) {
+function Field({
+  label,
+  type = "text",
+  value,
+  onChange,
+  required,
+}: {
+  label: string;
+  type?: string;
+  value?: string;
+  onChange?: (v: string) => void;
+  required?: boolean;
+}) {
   return (
     <div>
-      <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">{label}</label>
-      <input type={type} required={required} value={value ?? ""} onChange={(e) => onChange?.(e.target.value)}
-        className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm md:text-base focus:outline-none focus:border-primary transition" />
+      <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-2">
+        {label}
+      </label>
+      <input
+        type={type}
+        required={required}
+        value={value ?? ""}
+        onChange={(e) => onChange?.(e.target.value)}
+        className="w-full rounded-xl bg-secondary/50 border border-border px-4 py-3 text-sm md:text-base focus:outline-none focus:border-primary transition"
+      />
     </div>
   );
 }
 
 /* ---------- NEWS ---------- */
 type NewsItem = {
-  id: string; tag: string | null; published_at: string;
-  title_uz: string; title_en: string; body_uz: string; body_en: string; image_url: string | null;
+  id: string;
+  tag: string | null;
+  published_at: string;
+  title_uz: string;
+  title_en: string;
+  body_uz: string;
+  body_en: string;
+  image_url: string | null;
 };
 
 export function News() {
@@ -547,7 +737,11 @@ export function News() {
   }, []);
 
   const fmt = (d: string) =>
-    new Date(d).toLocaleDateString(lang === "uz" ? "uz-UZ" : "en-US", { day: "numeric", month: "short", year: "numeric" });
+    new Date(d).toLocaleDateString(lang === "uz" ? "uz-UZ" : "en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
 
   if (items !== null && items.length === 0) return null;
 
@@ -557,13 +751,19 @@ export function News() {
       <div className="container relative mx-auto px-6">
         <SectionHeader eyebrow={t("news.eyebrow")} title={t("news.title")} />
         {items === null ? (
-          <div className="grid place-items-center py-16"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
+          <div className="grid place-items-center py-16">
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+          </div>
         ) : (
           <>
             <div className="mt-12 md:mt-16 grid md:grid-cols-3 gap-5 md:gap-6">
               {items.map((n, i) => (
-                <Reveal key={n.id} delay={i * 120} as="article"
-                  className="group relative p-6 md:p-7 rounded-2xl md:rounded-3xl glass premium-border glow-border spotlight overflow-hidden hover:-translate-y-1 transition-all duration-500 flex flex-col">
+                <Reveal
+                  key={n.id}
+                  delay={i * 120}
+                  as="article"
+                  className="group relative p-6 md:p-7 rounded-2xl md:rounded-3xl glass premium-border glow-border spotlight overflow-hidden hover:-translate-y-1 transition-all duration-500 flex flex-col"
+                >
                   <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-primary/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div className="relative flex items-center justify-between gap-2 mb-4 md:mb-5">
                     {n.tag && (
@@ -613,18 +813,20 @@ export function Pricing() {
       name: "Silver",
       price: "$99",
       period: lang === "uz" ? "/yil" : "/year",
-      desc: lang === "uz"
-        ? "Tarmoq yaratayotgan tadbirkorlar uchun"
-        : "For entrepreneurs building their network",
+      desc:
+        lang === "uz"
+          ? "Tarmoq yaratayotgan tadbirkorlar uchun"
+          : "For entrepreneurs building their network",
       Icon: Award,
     },
     {
       name: "Gold",
       price: "$249",
       period: lang === "uz" ? "/yil" : "/year",
-      desc: lang === "uz"
-        ? "Jiddiy biznes egalari uchun premium kirish"
-        : "Premium access for serious business owners",
+      desc:
+        lang === "uz"
+          ? "Jiddiy biznes egalari uchun premium kirish"
+          : "Premium access for serious business owners",
       Icon: Crown,
       featured: true,
     },
@@ -632,9 +834,10 @@ export function Pricing() {
       name: "Founding",
       price: "$499",
       period: lang === "uz" ? "/yil" : "/year",
-      desc: lang === "uz"
-        ? "Assotsiatsiya kelajagini shakllantiruvchi liderlar uchun"
-        : "For leaders shaping the association's future",
+      desc:
+        lang === "uz"
+          ? "Assotsiatsiya kelajagini shakllantiruvchi liderlar uchun"
+          : "For leaders shaping the association's future",
       Icon: Gem,
     },
   ];
@@ -644,21 +847,30 @@ export function Pricing() {
       name: "Bronze Sponsor",
       price: "$1,500",
       period: lang === "uz" ? "/yil" : "/year",
-      desc: lang === "uz" ? "Korporativ a'zolikning boshlang'ich darajasi" : "Entry-level corporate membership",
+      desc:
+        lang === "uz"
+          ? "Korporativ a'zolikning boshlang'ich darajasi"
+          : "Entry-level corporate membership",
       Icon: Building2,
     },
     {
       name: "Silver Sponsor",
       price: "$3,500",
       period: lang === "uz" ? "/yil" : "/year",
-      desc: lang === "uz" ? "Kengaytirilgan ko'rinish va imkoniyatlar" : "Expanded visibility and benefits",
+      desc:
+        lang === "uz"
+          ? "Kengaytirilgan ko'rinish va imkoniyatlar"
+          : "Expanded visibility and benefits",
       Icon: Award,
     },
     {
       name: "Gold Sponsor",
       price: "$7,500",
       period: lang === "uz" ? "/yil" : "/year",
-      desc: lang === "uz" ? "Yetakchi homiylik va premium imtiyozlar" : "Leading sponsorship and premium perks",
+      desc:
+        lang === "uz"
+          ? "Yetakchi homiylik va premium imtiyozlar"
+          : "Leading sponsorship and premium perks",
       Icon: Trophy,
       featured: true,
     },
@@ -666,7 +878,10 @@ export function Pricing() {
       name: "Platinum Partner",
       price: "$15,000",
       period: lang === "uz" ? "/yil" : "/year",
-      desc: lang === "uz" ? "Strategik hamkorlik va eksklyuziv kirish" : "Strategic partnership and exclusive access",
+      desc:
+        lang === "uz"
+          ? "Strategik hamkorlik va eksklyuziv kirish"
+          : "Strategic partnership and exclusive access",
       Icon: Gem,
     },
   ];
@@ -720,9 +935,13 @@ export function Pricing() {
               <div className="relative h-11 w-11 md:h-12 md:w-12 rounded-xl md:rounded-2xl bg-gradient-moon shadow-glow flex items-center justify-center transition-transform duration-500 hover:scale-110">
                 <p.Icon className="h-5 w-5 text-primary-foreground icon-pop" />
               </div>
-              <h3 className="relative mt-4 md:mt-5 text-lg md:text-xl font-display font-semibold">{p.name}</h3>
+              <h3 className="relative mt-4 md:mt-5 text-lg md:text-xl font-display font-semibold">
+                {p.name}
+              </h3>
               <div className="relative mt-2 md:mt-3 flex items-baseline gap-1">
-                <span className="text-3xl md:text-4xl font-display font-bold text-gradient-anim stat-glow">{p.price}</span>
+                <span className="text-3xl md:text-4xl font-display font-bold text-gradient-anim stat-glow">
+                  {p.price}
+                </span>
                 <span className="text-xs md:text-sm text-muted-foreground">{p.period}</span>
               </div>
               <p className="relative mt-2 md:mt-3 text-sm text-muted-foreground flex-1">{p.desc}</p>
@@ -749,10 +968,12 @@ export function Footer() {
     <footer className="border-t border-border py-10 md:py-12">
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs md:text-sm text-muted-foreground text-center md:text-left">
         <div className="flex items-center gap-2 md:gap-3 flex-wrap justify-center">
-          <img src={logo} alt="UUEA" className="h-7 md:h-8 w-auto object-contain" />
+          <img src="/logo.png" alt="UUEA" className="h-7 md:h-8 w-auto object-contain" />
           <span>· USA × Uzbekistan Entrepreneurs Association</span>
         </div>
-        <div>© {new Date().getFullYear()} UUEA. {t("footer.rights")}.</div>
+        <div>
+          © {new Date().getFullYear()} UUEA. {t("footer.rights")}.
+        </div>
       </div>
     </footer>
   );
@@ -760,17 +981,24 @@ export function Footer() {
 
 /* ---------- helpers ---------- */
 function Eyebrow({ children }: { children: React.ReactNode }) {
-  return <div className="inline-flex items-center gap-2 text-xs tracking-[0.3em] uppercase text-primary">
-    <span className="h-px w-8 bg-primary" />{children}
-  </div>;
+  return (
+    <div className="inline-flex items-center gap-2 text-xs tracking-[0.3em] uppercase text-primary">
+      <span className="h-px w-8 bg-primary" />
+      {children}
+    </div>
+  );
 }
 function SectionHeader({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <Reveal className="text-center max-w-3xl mx-auto">
       <div className="inline-flex items-center gap-2 text-[10px] md:text-xs tracking-[0.3em] uppercase text-primary">
-        <span className="h-px w-6 md:w-8 bg-primary" />{eyebrow}<span className="h-px w-6 md:w-8 bg-primary" />
+        <span className="h-px w-6 md:w-8 bg-primary" />
+        {eyebrow}
+        <span className="h-px w-6 md:w-8 bg-primary" />
       </div>
-      <h2 className="mt-4 md:mt-5 text-2xl sm:text-3xl md:text-5xl font-display font-bold tracking-tight text-gradient-anim">{title}</h2>
+      <h2 className="mt-4 md:mt-5 text-2xl sm:text-3xl md:text-5xl font-display font-bold tracking-tight text-gradient-anim">
+        {title}
+      </h2>
     </Reveal>
   );
 }

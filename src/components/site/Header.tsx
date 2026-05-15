@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import logo from "@/assets/uuea-logo.png";
 import { useI18n, dict } from "@/lib/i18n";
 import { Phone, Menu, X } from "lucide-react";
 
@@ -36,7 +35,11 @@ export function Header() {
     >
       <div className="container mx-auto px-6 flex items-center justify-between gap-6">
         <a href="#top" className="flex items-center gap-3 group">
-          <img src={logo} alt="UUEA" className="h-16 md:h-24 lg:h-28 w-auto object-contain transition-transform group-hover:scale-105" />
+          <img
+            src="/logo.png"
+            alt="UUEA"
+            className="h-16 md:h-24 lg:h-28 w-auto object-contain transition-transform group-hover:scale-105"
+          />
         </a>
 
         <nav className="hidden lg:flex items-center gap-8">
@@ -53,7 +56,10 @@ export function Header() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <a href="tel:+13125550199" className="hidden xl:flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
+          <a
+            href="tel:+13125550199"
+            className="hidden xl:flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition"
+          >
             <Phone className="h-4 w-4 text-primary" />
             +1 (312) 555-0199
           </a>
@@ -63,7 +69,9 @@ export function Header() {
                 key={l}
                 onClick={() => setLang(l)}
                 className={`px-3 py-1 rounded-full uppercase tracking-wider transition ${
-                  lang === l ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                  lang === l
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {l}
@@ -85,14 +93,20 @@ export function Header() {
                 key={l}
                 onClick={() => setLang(l)}
                 className={`px-2.5 py-1 rounded-full uppercase tracking-wider transition ${
-                  lang === l ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                  lang === l
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {l}
               </button>
             ))}
           </div>
-          <button className="text-foreground p-1" onClick={() => setOpen((o) => !o)} aria-label="menu">
+          <button
+            className="text-foreground p-1"
+            onClick={() => setOpen((o) => !o)}
+            aria-label="menu"
+          >
             {open ? <X /> : <Menu />}
           </button>
         </div>
@@ -101,7 +115,12 @@ export function Header() {
       {open && (
         <div className="lg:hidden glass-strong border-t border-border mt-3 py-6 px-6 space-y-4">
           {links.map(([href, key]) => (
-            <a key={href} href={href} onClick={() => setOpen(false)} className="block text-sm text-muted-foreground hover:text-foreground">
+            <a
+              key={href}
+              href={href}
+              onClick={() => setOpen(false)}
+              className="block text-sm text-muted-foreground hover:text-foreground"
+            >
               {t(key)}
             </a>
           ))}
