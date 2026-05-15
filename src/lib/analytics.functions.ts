@@ -5,11 +5,7 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 function getCountry(): string | null {
-  // Cloudflare Workers expose CF-IPCountry; on other hosts may be empty
-  const cf = getRequestHeader("cf-ipcountry");
-  if (cf && cf !== "XX" && cf !== "T1") return cf;
-  const fallback = getRequestHeader("x-vercel-ip-country") || getRequestHeader("x-country");
-  return fallback || null;
+  return getRequestHeader("x-vercel-ip-country") || getRequestHeader("x-country") || null;
 }
 
 export const trackVisit = createServerFn({ method: "POST" })
@@ -65,19 +61,13 @@ export const getAnalytics = createServerFn({ method: "GET" })
 
     const [visitsRes, clicksRes, byCountryRes, byDayRes, recentRes] = await Promise.all([
       supabaseAdmin.from("site_visits").select("id", { count: "exact", head: true }),
-      supabaseAdmin
-        .from("button_clicks")
-        .select("button_id")
-        .eq("button_id", "visit_platform"),
+      supabaseAdmin.from("button_clicks").select("button_id").eq("button_id", "visit_platform"),
       supabaseAdmin
         .from("site_visits")
         .select("country")
         .gte("created_at", since)
         .not("country", "is", null),
-      supabaseAdmin
-        .from("site_visits")
-        .select("created_at")
-        .gte("created_at", since),
+      supabaseAdmin.from("site_visits").select("created_at").gte("created_at", since),
       supabaseAdmin
         .from("site_visits")
         .select("path, country, created_at, referrer")

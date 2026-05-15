@@ -77,18 +77,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Moonlit Studio is a professional website designed for businesses, featuring a premium aesthetic and dual-language support." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Moonlit Studio is a professional website designed for businesses, featuring a premium aesthetic and dual-language support." },
+      { title: "UUEA" },
+      {
+        name: "description",
+        content:
+          "USA Uzbekistan Entrepreneurs Association platform for community, events, and member updates.",
+      },
+      { name: "author", content: "UUEA" },
+      { property: "og:title", content: "UUEA" },
+      {
+        property: "og:description",
+        content:
+          "USA Uzbekistan Entrepreneurs Association platform for community, events, and member updates.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Moonlit Studio is a professional website designed for businesses, featuring a premium aesthetic and dual-language support." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/811c36b1-5461-45c7-8bad-34d05ca41435/id-preview-963b4cfc--27ce3405-57b1-401b-b751-41d865118240.lovable.app-1778752496643.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/811c36b1-5461-45c7-8bad-34d05ca41435/id-preview-963b4cfc--27ce3405-57b1-401b-b751-41d865118240.lovable.app-1778752496643.png" },
+      { name: "twitter:title", content: "UUEA" },
+      {
+        name: "twitter:description",
+        content:
+          "USA Uzbekistan Entrepreneurs Association platform for community, events, and member updates.",
+      },
     ],
     links: [
       {

@@ -1,5 +1,0 @@
-# TanStack Start + Nitro (netlify preset) writes static files to `dist` and server
-# handlers under `.netlify/functions-internal/`. Netlify sets NETLIFY=true during CI builds.
-[build]
-  command = "npm run build"
-  publish = "dist"
