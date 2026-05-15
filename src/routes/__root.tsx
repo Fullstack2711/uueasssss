@@ -5,15 +5,10 @@ import {
   createRootRouteWithContext,
   useRouter,
   useRouterState,
-  HeadContent,
-  Scripts,
 } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { Toaster } from "@/components/ui/sonner";
 import { trackVisit } from "@/lib/analytics.functions";
-
-import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
   return (
@@ -99,45 +94,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "USA Uzbekistan Entrepreneurs Association platform for community, events, and member updates.",
       },
     ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
   }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
 
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const track = useServerFn(trackVisit);
   const lastTracked = useRef<string | null>(null);
 
   useEffect(() => {
     if (pathname.startsWith("/admin")) return;
     if (lastTracked.current === pathname) return;
     lastTracked.current = pathname;
-    track({ data: { path: pathname, referrer: document.referrer || null } }).catch(() => {});
-  }, [pathname, track]);
+    trackVisit({ path: pathname, referrer: document.referrer || null }).catch(() => {});
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>

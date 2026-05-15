@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { Reveal } from "./Reveal";
 import { trackClick } from "@/lib/analytics.functions";
@@ -20,9 +19,8 @@ import { listNews } from "@/lib/news.functions";
 /* ---------- HERO ---------- */
 export function Hero() {
   const { t } = useI18n();
-  const trackBtn = useServerFn(trackClick);
   const onPlatformClick = () => {
-    trackBtn({ data: { button_id: "visit_platform" } }).catch(() => {});
+    trackClick({ button_id: "visit_platform" }).catch(() => {});
   };
   return (
     <section id="top" className="relative min-h-screen flex items-center overflow-hidden pt-28 md:pt-32 pb-16 md:pb-20">
@@ -448,7 +446,6 @@ export function Contact() {
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState({ name: "", company: "", email: "", phone: "", message: "" });
-  const send = useServerFn(submitContact);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -458,7 +455,13 @@ export function Contact() {
     }
     setBusy(true);
     try {
-      await send({ data: { name: form.name, company: form.company, email: form.email, phone: form.phone, message: form.message } });
+      await submitContact({
+        name: form.name,
+        company: form.company,
+        email: form.email,
+        phone: form.phone,
+        message: form.message,
+      });
       setSent(true);
       setForm({ name: "", company: "", email: "", phone: "", message: "" });
       toast.success(lang === "uz" ? "Xabaringiz yuborildi!" : "Your message has been sent!");
@@ -535,12 +538,13 @@ type NewsItem = {
 
 export function News() {
   const { t, lang } = useI18n();
-  const fetchNews = useServerFn(listNews);
   const [items, setItems] = useState<NewsItem[] | null>(null);
 
   useEffect(() => {
-    fetchNews({ data: { limit: 3 } }).then((r) => setItems(r.items as NewsItem[])).catch(() => setItems([]));
-  }, [fetchNews]);
+    listNews({ limit: 3 })
+      .then((r) => setItems(r.items as NewsItem[]))
+      .catch(() => setItems([]));
+  }, []);
 
   const fmt = (d: string) =>
     new Date(d).toLocaleDateString(lang === "uz" ? "uz-UZ" : "en-US", { day: "numeric", month: "short", year: "numeric" });

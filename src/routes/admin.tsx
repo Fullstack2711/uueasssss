@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, useCallback } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { adminExists, claimFirstAdmin } from "@/lib/admin.functions";
 import { getAnalytics } from "@/lib/analytics.functions";
@@ -10,6 +9,27 @@ import {
   BarChart3, Newspaper, Mail, LogOut, Loader2, Plus, Pencil, Trash2,
   Globe2, MousePointerClick, Eye, Check, X, Shield, LogIn, UserPlus,
 } from "lucide-react";
+
+const ADMIN_REQUEST_TIMEOUT_MS = 3000;
+
+function withTimeout<T>(promise: Promise<T>, label: string): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timeout = window.setTimeout(() => {
+      reject(new Error(`${label} javobi kelmadi`));
+    }, ADMIN_REQUEST_TIMEOUT_MS);
+
+    promise.then(
+      (value) => {
+        window.clearTimeout(timeout);
+        resolve(value);
+      },
+      (error) => {
+        window.clearTimeout(timeout);
+        reject(error);
+      },
+    );
+  });
+}
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -28,10 +48,13 @@ function AdminPage() {
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase.auth.getSession();
-      setAuthed(!!data.session);
-      setEmail(data.session?.user.email ?? null);
-      setReady(true);
+      try {
+        const { data } = await withTimeout(supabase.auth.getSession(), "Sessiya");
+        setAuthed(!!data.session);
+        setEmail(data.session?.user.email ?? null);
+      } finally {
+        setReady(true);
+      }
     })();
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
       setAuthed(!!s);
@@ -63,9 +86,19 @@ function LoginForm() {
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const r = await adminExists();
-      if (!mounted) return;
-      setMode(r.exists ? "login" : "signup");
+      try {
+        const r = await withTimeout(adminExists(), "Admin holati");
+        if (!mounted) return;
+        setMode(r.exists ? "login" : "signup");
+      } catch (e) {
+        if (!mounted) return;
+        setError(
+          e instanceof Error
+            ? e.message
+            : "Admin sozlamalarini tekshirishda xatolik yuz berdi",
+        );
+        setMode("login");
+      }
     })();
     return () => { mounted = false; };
   }, []);
@@ -81,12 +114,14 @@ function LoginForm() {
           options: { emailRedirectTo: `${window.location.origin}/admin` },
         });
         if (error) throw error;
-        const userId = data.user?.id;
+        let userId = data.session?.user.id ?? data.user?.id;
         if (!userId) throw new Error("Foydalanuvchi yaratilmadi");
-        await claimFirstAdmin({ data: { user_id: userId } });
         if (!data.session) {
-          await supabase.auth.signInWithPassword({ email, password });
+          const signIn = await supabase.auth.signInWithPassword({ email, password });
+          if (signIn.error) throw signIn.error;
+          userId = signIn.data.user?.id ?? userId;
         }
+        await claimFirstAdmin({ user_id: userId });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -213,19 +248,18 @@ function Dashboard({ email }: { email: string | null }) {
 /* ---------------- Analytics ---------------- */
 
 function AnalyticsPanel() {
-  const fetchAnalytics = useServerFn(getAnalytics);
   const [data, setData] = useState<Awaited<ReturnType<typeof getAnalytics>> | null>(null);
   const [loading, setLoading] = useState(true);
 
   const reload = useCallback(async () => {
     setLoading(true);
     try {
-      const r = await fetchAnalytics();
+      const r = await getAnalytics();
       setData(r);
     } finally {
       setLoading(false);
     }
-  }, [fetchAnalytics]);
+  }, []);
 
   useEffect(() => { reload(); }, [reload]);
 
@@ -321,9 +355,6 @@ type NewsRow = {
 };
 
 function NewsPanel() {
-  const fetchNews = useServerFn(listNews);
-  const saveNews = useServerFn(upsertNews);
-  const removeNews = useServerFn(deleteNews);
   const [items, setItems] = useState<NewsRow[]>([]);
   const [editing, setEditing] = useState<Partial<NewsRow> | null>(null);
   const [loading, setLoading] = useState(true);
@@ -331,10 +362,10 @@ function NewsPanel() {
 
   const reload = useCallback(async () => {
     setLoading(true);
-    const r = await fetchNews({ data: { limit: 50 } });
+    const r = await listNews({ limit: 50 });
     setItems(r.items as NewsRow[]);
     setLoading(false);
-  }, [fetchNews]);
+  }, []);
 
   useEffect(() => { reload(); }, [reload]);
 
@@ -342,17 +373,15 @@ function NewsPanel() {
     if (!editing) return;
     setSaving(true);
     try {
-      await saveNews({
-        data: {
-          id: editing.id,
-          title_uz: editing.title_uz || "",
-          title_en: editing.title_en || "",
-          body_uz: editing.body_uz || "",
-          body_en: editing.body_en || "",
-          tag: editing.tag || null,
-          image_url: editing.image_url || "",
-          published_at: editing.published_at,
-        },
+      await upsertNews({
+        id: editing.id,
+        title_uz: editing.title_uz || "",
+        title_en: editing.title_en || "",
+        body_uz: editing.body_uz || "",
+        body_en: editing.body_en || "",
+        tag: editing.tag || null,
+        image_url: editing.image_url || "",
+        published_at: editing.published_at,
       });
       setEditing(null);
       await reload();
@@ -365,7 +394,7 @@ function NewsPanel() {
 
   const onDelete = async (id: string) => {
     if (!confirm("O'chirilsinmi?")) return;
-    await removeNews({ data: { id } });
+    await deleteNews({ id });
     reload();
   };
 
@@ -452,18 +481,15 @@ type MsgRow = {
 };
 
 function MessagesPanel() {
-  const fetchMessages = useServerFn(listMessages);
-  const markRead = useServerFn(markMessageRead);
-  const removeMsg = useServerFn(deleteMessage);
   const [items, setItems] = useState<MsgRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   const reload = useCallback(async () => {
     setLoading(true);
-    const r = await fetchMessages();
+    const r = await listMessages();
     setItems(r.items as MsgRow[]);
     setLoading(false);
-  }, [fetchMessages]);
+  }, []);
 
   useEffect(() => { reload(); }, [reload]);
 
@@ -496,11 +522,11 @@ function MessagesPanel() {
                 <p className="text-sm whitespace-pre-wrap">{m.message}</p>
               </div>
               <div className="flex flex-col gap-1 shrink-0">
-                <button onClick={async () => { await markRead({ data: { id: m.id, is_read: !m.is_read } }); reload(); }}
+                <button onClick={async () => { await markMessageRead({ id: m.id, is_read: !m.is_read }); reload(); }}
                   className="p-2 rounded-lg hover:bg-secondary" title={m.is_read ? "O'qilmagan deb belgilash" : "O'qilgan deb belgilash"}>
                   <Check className={`h-3.5 w-3.5 ${m.is_read ? "text-primary" : ""}`} />
                 </button>
-                <button onClick={async () => { if (confirm("O'chirilsinmi?")) { await removeMsg({ data: { id: m.id } }); reload(); } }}
+                <button onClick={async () => { if (confirm("O'chirilsinmi?")) { await deleteMessage({ id: m.id }); reload(); } }}
                   className="p-2 rounded-lg hover:bg-destructive/20 text-destructive">
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>
